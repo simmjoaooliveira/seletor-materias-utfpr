@@ -15,6 +15,7 @@ const PERIODOS = [
   { id: "7", label: "7º Período" },
   { id: "8", label: "8º Período" },
   { id: "9", label: "9º Período" },
+  { id: "10", label: "10º Período" },
 ];
 
 // Função para obter cor da trilha
@@ -63,7 +64,6 @@ function getTrilhaColorHex(trilha) {
 function processarMaterias() {
   const materiasPorPeriodo = {};
   const todasMaterias = {};
-  const codigosUsados = new Set();
   
   materiasData.forEach(materia => {
     const periodoKey = String(materia.periodo);
@@ -71,32 +71,9 @@ function processarMaterias() {
       materiasPorPeriodo[periodoKey] = [];
     }
     
-    const palavras = materia.nome.split(' ').filter(p => p.length > 0);
-    let codigoBase = palavras
-      .slice(0, 3)
-      .map(palavra => {
-        const primeiraLetra = palavra
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')[0]
-          ?.toUpperCase() || '';
-        return primeiraLetra;
-      })
-      .filter(l => l.match(/[A-Z]/))
-      .join('');
-    
-    let codigo = codigoBase + materia.periodo.toString().padStart(2, '0');
-    
-    let contador = 1;
-    const codigoOriginal = codigo;
-    while (codigosUsados.has(codigo)) {
-      codigo = codigoOriginal + String.fromCharCode(64 + contador);
-      contador++;
-      if (contador > 26) {
-        codigo = codigoOriginal + contador;
-      }
-    }
-    
-    codigosUsados.add(codigo);
+    // Pega o ID (ex: NCM010) direto do JSON. 
+    // Se esquecer de colocar o ID em alguma matéria, usa o nome para não quebrar o site
+    const codigo = materia.id || materia.nome; 
     
     const materiaProcessada = {
       codigo: codigo,
@@ -105,7 +82,7 @@ function processarMaterias() {
       descricao: materia.ementa ? materia.ementa.substring(0, 100) + '...' : `Disciplina do ${materia.periodo}º período.`,
       descricaoDetalhada: materia.ementa || `Esta disciplina faz parte do ${materia.periodo}º período do curso de Engenharia Eletrônica.`,
       carga: materia.carga ? `${materia.carga}h` : "—",
-      horasSemanais: materia.horasSemanais || null,
+      aulasSemanais: materia.aulasSemanais || null,
       prereq: materia.preRequisito ? [materia.preRequisito] : [],
       professor: "—",
       horario: "—",
@@ -118,12 +95,21 @@ function processarMaterias() {
     };
     
     materiasPorPeriodo[periodoKey].push(materiaProcessada);
-    todasMaterias[materia.nome] = materiaProcessada;
+    // Salva no dicionário global usando o novo ID como chave de busca
+    todasMaterias[codigo] = materiaProcessada; 
   });
   
+  // Verificação final de segurança para os pré-requisitos
   Object.values(materiasPorPeriodo).flat().forEach(m => {
     if (m.preRequisito) {
-      const preReqMateria = todasMaterias[m.preRequisito];
+      // Tenta achar a matéria de pré-requisito pelo ID (novo padrão da Matriz 88)
+      let preReqMateria = todasMaterias[m.preRequisito];
+      
+      // Se não achar pelo ID, tenta achar pelo nome (como plano B de segurança)
+      if (!preReqMateria) {
+        preReqMateria = Object.values(todasMaterias).find(mat => mat.nome === m.preRequisito);
+      }
+      
       if (preReqMateria) {
         m.prereq = [preReqMateria.codigo];
       }
@@ -577,8 +563,6 @@ function SelecaoPeriodoMaterias() {
   function executarCalculo() {
     if (!periodoSelecionado) return;
 
-    console.log('[DEBUG executarCalculo] materiasConcluidas:', materiasConcluidas);
-
     let periodosConsiderados;
     if (materiasConcluidas.length === 0) {
       periodosConsiderados = ["1"];
@@ -600,7 +584,6 @@ function SelecaoPeriodoMaterias() {
       periodosConsiderados = PERIODOS.slice(idxInicio, idxFim).map((p) => p.id);
     }
 
-    console.log('[DEBUG executarCalculo] periodosConsiderados:', periodosConsiderados);
 
     let candidatas = [];
     periodosConsiderados.forEach((pid) => {
@@ -610,20 +593,7 @@ function SelecaoPeriodoMaterias() {
         // Se não tem pré-requisitos, pode cursar
         const prereqOk = m.prereq.length === 0 || m.prereq.every((pre) => materiasConcluidas.includes(pre));
         const naoConcluida = !materiasConcluidas.includes(m.codigo);
-        
-        if (m.prereq.length > 0) {
-          const prereqFaltando = m.prereq.filter(pre => !materiasConcluidas.includes(pre));
-          console.log(`[DEBUG executarCalculo] Matéria ${m.codigo} (${m.nome}):`, {
-            prereq: m.prereq,
-            prereqFaltando: prereqFaltando,
-            prereqOk,
-            naoConcluida,
-            podeCursar: prereqOk && naoConcluida
-          });
-        } else {
-          console.log(`[DEBUG executarCalculo] Matéria ${m.codigo} (${m.nome}): SEM PRÉ-REQUISITOS, podeCursar:`, naoConcluida);
-        }
-        
+
         if (prereqOk && naoConcluida) {
           candidatas.push({
             ...m,
@@ -633,12 +603,9 @@ function SelecaoPeriodoMaterias() {
       });
     });
     
-    console.log('[DEBUG executarCalculo] Total de candidatas encontradas:', candidatas.length);
-    console.log('[DEBUG executarCalculo] Candidatas:', candidatas.map(c => `${c.codigo} - ${c.nome}`));
-
     candidatas.sort((a, b) => {
       if (a.periodo !== b.periodo) return a.periodo - b.periodo;
-      return (b.horasSemanais || 0) - (a.horasSemanais || 0);
+      return (b.aulasSemanais || 0) - (a.aulasSemanais || 0);
     });
 
     setPossiveisMaterias(candidatas);
@@ -1110,9 +1077,9 @@ function SelecaoPeriodoMaterias() {
                             transition={{ delay: index * 0.05 + 0.25 }}
                           >
                             {m.codigo} • {m.carga}
-                            {m.horasSemanais && (
+                            {m.aulasSemanais && (
                               <span className="ml-2 text-indigo-600 font-semibold">
-                                • {m.horasSemanais.toFixed(1)}h/sem
+                                • {m.aulasSemanais} aulas/sem
                               </span>
                             )}
                           </motion.div>
@@ -1178,7 +1145,14 @@ function SelecaoPeriodoMaterias() {
               <div className="flex justify-between items-start mb-4">
                 <div className="flex-1 pr-2">
                   <h2 className="text-lg sm:text-2xl font-bold text-gray-800">{materiaDetalhada.nome}</h2>
-                  <p className="text-sm sm:text-lg text-gray-600">{materiaDetalhada.codigo} • {materiaDetalhada.carga}</p>
+                  <p className="text-sm sm:text-lg text-gray-600">
+                  {materiaDetalhada.codigo} • {materiaDetalhada.carga}
+                  {materiaDetalhada.aulasSemanais && (
+                  <span className="ml-2 font-semibold text-indigo-600">
+                  • {materiaDetalhada.aulasSemanais} aulas/sem
+                  </span>
+                  )}
+                </p>
                 </div>
                 <button
                   onClick={fecharDetalhes}
@@ -1484,7 +1458,6 @@ function SelecaoPeriodoMaterias() {
                             onClick={(e) => {
                               e.stopPropagation();
                               e.preventDefault();
-                              console.log('[DEBUG] Clicou na matéria:', m.codigo, m.nome);
                               toggleConcluida(m.codigo);
                             }}
                             whileHover={{ scale: 1.02 }}
@@ -1595,9 +1568,9 @@ function SelecaoPeriodoMaterias() {
                 >
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div>
-                      <p className="text-sm opacity-90">Total de horas semanais</p>
+                      <p className="text-sm opacity-90">Total de aulas semanais</p>
                       <p className="text-2xl sm:text-3xl font-bold">
-                        {possiveisMaterias.reduce((sum, m) => sum + (m.horasSemanais || 0), 0).toFixed(1)}h/sem
+                        {possiveisMaterias.reduce((sum, m) => sum + (m.aulasSemanais || 0), 0)} aulas
                       </p>
                     </div>
                     <div className="text-right">
@@ -1666,9 +1639,9 @@ function SelecaoPeriodoMaterias() {
                           </div>
                           <div className="text-xs text-gray-500 font-medium mb-2">
                             {m.codigo} • {m.carga}
-                            {m.horasSemanais && (
+                            {m.aulasSemanais && (
                               <span className="ml-2 text-indigo-600 font-semibold">
-                                • {m.horasSemanais.toFixed(1)}h/sem
+                                • {m.aulasSemanais} aulas/sem
                               </span>
                             )}
                           </div>
@@ -1781,25 +1754,27 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
     
     if (!materiaSelecionadaObj) return conectadas;
     
+    // Agora busca pelo ID (codigo) em vez do nome
     if (materiaSelecionadaObj.prepara) {
-      materiaSelecionadaObj.prepara.forEach(nome => {
-        const m = materiasFiltradas.find(mat => mat.nome === nome);
+      materiaSelecionadaObj.prepara.forEach(idPrepara => {
+        const m = materiasFiltradas.find(mat => mat.codigo === idPrepara);
         if (m) conectadas.add(m.codigo);
       });
     }
     
     if (materiaSelecionadaObj.requer) {
-      materiaSelecionadaObj.requer.forEach(nome => {
-        const m = materiasFiltradas.find(mat => mat.nome === nome);
+      materiaSelecionadaObj.requer.forEach(idRequer => {
+        const m = materiasFiltradas.find(mat => mat.codigo === idRequer);
         if (m) conectadas.add(m.codigo);
       });
     }
     
+    // Verificação reversa usando codigo
     materiasFiltradas.forEach(m => {
-      if (m.prepara && m.prepara.includes(materiaSelecionadaObj.nome)) {
+      if (m.prepara && m.prepara.includes(materiaSelecionadaObj.codigo)) {
         conectadas.add(m.codigo);
       }
-      if (m.requer && m.requer.includes(materiaSelecionadaObj.nome)) {
+      if (m.requer && m.requer.includes(materiaSelecionadaObj.codigo)) {
         conectadas.add(m.codigo);
       }
     });
@@ -1871,8 +1846,9 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
       }
 
       if (materia.prepara && materia.prepara.length > 0) {
-        materia.prepara.forEach((nomePrepara) => {
-          const materiaDestino = materiasFiltradas.find(m => m.nome === nomePrepara);
+        materia.prepara.forEach((idPrepara) => {
+          // Busca a matéria de destino pelo código em vez do nome
+          const materiaDestino = materiasFiltradas.find(m => m.codigo === idPrepara);
           if (materiaDestino && materiaDestino.periodo > materia.periodo && codigosExistentes.has(materiaDestino.codigo)) {
             const corSeta = getTrilhaColorHex(materia.trilha);
             const isConectada = isConectadaSelecionada(materia.codigo, materiaDestino.codigo);
@@ -1894,8 +1870,9 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
       }
       
       if (materia.requer && materia.requer.length > 0) {
-        materia.requer.forEach((nomeRequer) => {
-          const materiaRequerida = materiasFiltradas.find(m => m.nome === nomeRequer);
+        materia.requer.forEach((idRequer) => {
+          // Busca a matéria requerida pelo código em vez do nome
+          const materiaRequerida = materiasFiltradas.find(m => m.codigo === idRequer);
           if (materiaRequerida && materiaRequerida.periodo < materia.periodo && codigosExistentes.has(materiaRequerida.codigo)) {
             const isConectada = isConectadaSelecionada(materiaRequerida.codigo, materia.codigo);
             edgesList.push({

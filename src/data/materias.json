@@ -1,41 +1,5 @@
 [
   {
-    "id": "NCM010",
-    "nome": "Pré-Cálculo",
-    "periodo": 1,
-    "ementa": "Pré-Cálculo, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, aborda fundamentos básicos da matemática em problemas estruturados envolvendo contexto de engenharia. Nela, os estudantes aprendem a interpretar e delimitar problemas, descritos por números reais, expressões algébricas, equações e inequações, identificando as variáveis e as condições de contorno. Ao final da disciplina, é capaz de resolver problemas descritos por funções de uma variável real, elaborando hipóteses plausíveis aos problemas delimitados.",
-    "preRequisito": null,
-    "prepara": ["NCM004","NCM013"],
-    "requer": [],
-    "trilha": "Matemática e Física",
-    "carga": 45,
-    "aulasSemanais": 3
-  },
-  {
-    "id": "NCM008",
-    "nome": "Geometria Analítica",
-    "periodo": 1,
-    "ementa": "Geometria Analítica, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, trata do estudo analítico de vetores e objetos geométricos. Nela, os estudantes aprendem a descrever vetores, retas, planos, cônicas e quádricas de forma algébrica e geométrica. Ao final da disciplina, os estudantes são capazes de representar objetos geométricos de forma algébrica, bem como resolver problemas de engenharia utilizando conceitos e propriedades de álgebra vetorial.",
-    "preRequisito": null,
-    "prepara": ["NCM006"],
-    "requer": [],
-    "trilha": "Matemática e Física",
-    "carga": 45,
-    "aulasSemanais": 3
-  },
-  {
-    "id": "NCM012",
-    "nome": "Física 1",
-    "periodo": 1,
-    "ementa": "Física 1, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, aborda conceitos e aplicações das leis fundamentais da mecânica no contexto das engenharias. Nela, os estudantes aprendem os diferentes tipos de movimento e suas leis de conservação. Ao final da disciplina, é capaz de interpretar, delimitar, elaborar hipóteses plausíveis, bem como resolver problemas estruturados envolvendo os diferentes tipos de movimento e suas leis de conservação, relacionando-os com medidas experimentais no contexto das engenharias, com autonomia, dedicação e integridade.",
-    "preRequisito": null,
-    "prepara": ["EEL4001"],
-    "requer": [],
-    "trilha": "Matemática e Física",
-    "carga": 75,
-    "aulasSemanais": 5
-  },
-  {
     "id": "EEL1001",
     "nome": "Fundamentos da Engenharia Eletrônica",
     "periodo": 1,
@@ -55,7 +19,7 @@
     "preRequisito": null,
     "prepara": ["EEL2002","EEL2003"],
     "requer": [],
-    "trilha": "Computação",
+    "trilha": "Eletrônica",
     "carga": 45,
     "aulasSemanais": 3
   },
@@ -67,7 +31,7 @@
     "preRequisito": null,
     "prepara": ["EEL6006"],
     "requer": [],
-    "trilha": "Interdisciplinar",
+    "trilha": "Eletrônica",
     "carga": 90,
     "aulasSemanais": 6
   },
@@ -83,17 +47,78 @@
     "carga": 15,
     "aulasSemanais": 1
   },
-  { 
-    "id": "NCM004",
-    "nome": "Cálculo Diferencial e Integral 1",
+  {
+    "id": "NCM008",
+    "nome": "Geometria Analítica",
+    "periodo": 1,
+    "ementa": "Geometria Analítica, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, trata do estudo analítico de vetores e objetos geométricos. Nela, os estudantes aprendem a descrever vetores, retas, planos, cônicas e quádricas de forma algébrica e geométrica. Ao final da disciplina, os estudantes são capazes de representar objetos geométricos de forma algébrica, bem como resolver problemas de engenharia utilizando conceitos e propriedades de álgebra vetorial.",
+    "preRequisito": null,
+    "prepara": ["NCM006"],
+    "requer": [],
+    "trilha": "Matemática e Física",
+    "carga": 45,
+    "aulasSemanais": 3
+  },
+  {
+    "id": "NCM010",
+    "nome": "Pré-Cálculo",
+    "periodo": 1,
+    "ementa": "Pré-Cálculo, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, aborda fundamentos básicos da matemática em problemas estruturados envolvendo contexto de engenharia. Nela, os estudantes aprendem a interpretar e delimitar problemas, descritos por números reais, expressões algébricas, equações e inequações, identificando as variáveis e as condições de contorno. Ao final da disciplina, é capaz de resolver problemas descritos por funções de uma variável real, elaborando hipóteses plausíveis aos problemas delimitados.",
+    "preRequisito": null,
+    "prepara": ["NCM004","NCM013"],
+    "requer": [],
+    "trilha": "Matemática e Física",
+    "carga": 45,
+    "aulasSemanais": 3
+  },
+  {
+    "id": "NCM012",
+    "nome": "Física 1",
+    "periodo": 1,
+    "ementa": "Física 1, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, aborda conceitos e aplicações das leis fundamentais da mecânica no contexto das engenharias. Nela, os estudantes aprendem os diferentes tipos de movimento e suas leis de conservação. Ao final da disciplina, é capaz de interpretar, delimitar, elaborar hipóteses plausíveis, bem como resolver problemas estruturados envolvendo os diferentes tipos de movimento e suas leis de conservação, relacionando-os com medidas experimentais no contexto das engenharias, com autonomia, dedicação e integridade.",
+    "preRequisito": null,
+    "prepara": ["EEL4001"],
+    "requer": [],
+    "trilha": "Matemática e Física",
+    "carga": 75,
+    "aulasSemanais": 5
+  },
+
+  {
+    "id": "EEL2001",
+    "nome": "Tópicos em Química",
     "periodo": 2,
-    "ementa": "Cálculo Diferencial e Integral 1, ofertada aos estudantes do 2º período do curso de Engenharia Eletrônica, aborda aplicações de limites, derivadas e integrais de funções reais de uma variável real, em contextos das engenharias. Nela, os estudantes aprendem a interpretar e delimitar problemas, descritos por limites, derivadas e integrais, identificando as variáveis e as condições de contorno. Ao final da disciplina, é capaz de resolver problemas estruturados em diversos contextos da engenharia, analisando comportamentos e taxas de variação de funções, conforme variáveis, condições de contorno e hipóteses elaboradas, com autorregulação.",
-    "preRequisito": ["NCM010"],
-    "prepara": ["NCM005", "NCM014"],
-    "requer": ["NCM010"],
+    "ementa": "Disciplina introdutória aos conceitos fundamentais de química aplicada à engenharia.",
+    "preRequisito": null,
+    "prepara": [],
+    "requer": [],
     "trilha": "Matemática e Física",
     "carga": 60,
     "aulasSemanais": 4
+  },
+  {
+    "id": "EEL2002",
+    "nome": "Programação Estruturada",
+    "periodo": 2,
+    "ementa": "Disciplina que aprofunda os conceitos de programação estruturada e desenvolvimento de algoritmos.",
+    "preRequisito": "EEL1002",
+    "prepara": ["EEL3001"],
+    "requer": ["EEL1002"],
+    "trilha": "Eletrônica",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "EEL2003",
+    "nome": "Circuitos Digitais Combinacionais",
+    "periodo": 2,
+    "ementa": "Disciplina que aborda os fundamentos de circuitos digitais combinacionais.",
+    "preRequisito": "EEL1002",
+    "prepara": ["EEL3002"],
+    "requer": ["EEL1002"],
+    "trilha": "Eletrônica",
+    "carga": 45,
+    "aulasSemanais": 3
   },
   {
     "id": "NCM002",
@@ -103,6 +128,18 @@
     "preRequisito": null,
     "prepara": [],
     "requer": [],
+    "trilha": "Matemática e Física",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  { 
+    "id": "NCM004",
+    "nome": "Cálculo Diferencial e Integral 1",
+    "periodo": 2,
+    "ementa": "Cálculo Diferencial e Integral 1, ofertada aos estudantes do 2º período do curso de Engenharia Eletrônica, aborda aplicações de limites, derivadas e integrais de funções reais de uma variável real, em contextos das engenharias. Nela, os estudantes aprendem a interpretar e delimitar problemas, descritos por limites, derivadas e integrais, identificando as variáveis e as condições de contorno. Ao final da disciplina, é capaz de resolver problemas estruturados em diversos contextos da engenharia, analisando comportamentos e taxas de variação de funções, conforme variáveis, condições de contorno e hipóteses elaboradas, com autorregulação.",
+    "preRequisito": ["NCM010"],
+    "prepara": ["NCM005", "NCM014"],
+    "requer": ["NCM010"],
     "trilha": "Matemática e Física",
     "carga": 60,
     "aulasSemanais": 4
@@ -120,66 +157,6 @@
     "aulasSemanais": 5
   },
   {
-    "id": "EEL2001",
-    "nome": "Tópicos em Química",
-    "periodo": 2,
-    "ementa": "Disciplina introdutória aos conceitos fundamentais de química aplicada à engenharia.",
-    "preRequisito": null,
-    "prepara": [],
-    "requer": [],
-    "trilha": [],
-    "carga": 60,
-    "aulasSemanais": 4
-  },
-  {
-    "id": "EEL2002",
-    "nome": "Programação Estruturada",
-    "periodo": 2,
-    "ementa": "Disciplina que aprofunda os conceitos de programação estruturada e desenvolvimento de algoritmos.",
-    "preRequisito": "EEL1002",
-    "prepara": ["EEL3001"],
-    "requer": ["EEL1002"],
-    "trilha": "Computação",
-    "carga": 60,
-    "aulasSemanais": 4
-  },
-  {
-    "id": "EEL2003",
-    "nome": "Circuitos Digitais Combinacionais",
-    "periodo": 2,
-    "ementa": "Disciplina que aborda os fundamentos de circuitos digitais combinacionais.",
-    "preRequisito": "EEL1002",
-    "prepara": ["EEL3002"],
-    "requer": ["EEL1002"],
-    "trilha": "Eletrônica",
-    "carga": 45,
-    "aulasSemanais": 3
-  },
-  {
-    "id": "NCM005",
-    "nome": "Cálculo Diferencial e Integral 2",
-    "periodo": 3,
-    "ementa": "Continuação do Cálculo Diferencial e Integral 1, abordando técnicas avançadas de integração e aplicações.",
-    "preRequisito": "NCM004",
-    "prepara": ["NCM006"],
-    "requer": ["NCM004"],
-    "trilha": "Matemática e Física",
-    "carga": 60,
-    "aulasSemanais": 4
-  },
-  {
-    "id": "NCM014",
-    "nome": "Física 3",
-    "periodo": 3,
-    "ementa": "Continuação de Física 2, abordando temas avançados de física.",
-    "preRequisito": "NCM004",
-    "prepara": [],
-    "requer": ["NCM004"],
-    "trilha": "Matemática e Física",
-    "carga": 60,
-    "aulasSemanais": 4
-  },
-  {
     "id": "EEL3001",
     "nome": "Estrutura de Dados",
     "periodo": 3,
@@ -187,7 +164,7 @@
     "preRequisito": "EEL2002",
     "prepara": [],
     "requer": ["EEL2002"],
-    "trilha": "Computação",
+    "trilha": "Eletrônica",
     "carga": 60,
     "aulasSemanais": 4
   },
@@ -228,13 +205,25 @@
     "aulasSemanais": 4
   },
   {
-    "id": "NCM006",
-    "nome": "Cálculo Diferencial e Integral 3",
-    "periodo": 4,
-    "ementa": "Continuação do Cálculo Diferencial e Integral 2, abordando funções de múltiplas variáveis e aplicações avançadas.",
-    "preRequisito": ["NCM008","NCM005"],
-    "prepara": ["EEL5002"],
-    "requer": ["NCM008","NCM005"],
+    "id": "NCM005",
+    "nome": "Cálculo Diferencial e Integral 2",
+    "periodo": 3,
+    "ementa": "Continuação do Cálculo Diferencial e Integral 1, abordando técnicas avançadas de integração e aplicações.",
+    "preRequisito": "NCM004",
+    "prepara": ["NCM006"],
+    "requer": ["NCM004"],
+    "trilha": "Matemática e Física",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "NCM014",
+    "nome": "Física 3",
+    "periodo": 3,
+    "ementa": "Continuação de Física 2, abordando temas avançados de física.",
+    "preRequisito": "NCM004",
+    "prepara": [],
+    "requer": ["NCM004"],
     "trilha": "Matemática e Física",
     "carga": 60,
     "aulasSemanais": 4
@@ -271,7 +260,7 @@
     "preRequisito": null,
     "prepara": ["EEL5001"],
     "requer": [],
-    "trilha": "Computação",
+    "trilha": "Eletrônica",
     "carga": 60,
     "aulasSemanais": 4
   },
@@ -283,7 +272,7 @@
     "preRequisito": null,
     "prepara": [],
     "requer": [],
-    "trilha": "Computação",
+    "trilha": "Eletrônica",
     "carga": 30,
     "aulasSemanais": 2
   },
@@ -324,6 +313,18 @@
     "aulasSemanais": 2
   },
   {
+    "id": "NCM006",
+    "nome": "Cálculo Diferencial e Integral 3",
+    "periodo": 4,
+    "ementa": "Continuação do Cálculo Diferencial e Integral 2, abordando funções de múltiplas variáveis e aplicações avançadas.",
+    "preRequisito": ["NCM008","NCM005"],
+    "prepara": ["EEL5002"],
+    "requer": ["NCM008","NCM005"],
+    "trilha": "Matemática e Física",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
     "id": "EEL5001",
     "nome": "Microcontroladores 2",
     "periodo": 5,
@@ -331,7 +332,7 @@
     "preRequisito": "EEL4003",
     "prepara": [],
     "requer": ["EEL4003"],
-    "trilha": "Computação",
+    "trilha": "Eletrônica",
     "carga": 60,
     "aulasSemanais": 4
   },
@@ -401,7 +402,7 @@
     "periodo": 6,
     "ementa": "Disciplina que aborda os conceitos de programação orientada a objetos.",
     "preRequisito": null,
-    "prepara": [],
+    "prepara": ["OPT093"],
     "requer": [],
     "trilha": "Eletrônica",
     "carga": 60,
@@ -425,7 +426,7 @@
     "periodo": 6,
     "ementa": "Disciplina que aborda sistemas de eletrônica de potência e conversores.",
     "preRequisito": ["EEL4007"],
-    "prepara": [],
+    "prepara": ["OPT030"],
     "requer": ["EEL4007"],
     "trilha": "Eletrônica",
     "carga": 60,
@@ -475,18 +476,66 @@
     "preRequisito": "EEL6005",
     "prepara": [],
     "requer": ["EEL6005"],
-    "trilha": "Industrial",
+    "trilha": "Eletrônica",
     "carga": 60,
     "aulasSemanais": 4
   },
   {
     "id": "EEL7002",
-    "nome": "Controle Inteligente",
+    "nome": "Sistemas Supervisórios",
     "periodo": 7,
-    "ementa": "Disciplina que aborda técnicas de controle inteligente e adaptativo.",
-    "preRequisito": "EEL6005",
+    "ementa": "A disciplina de Sistemas Supervisórios é destinada a discentes a partir do 7º período e aborda aspectos de soluções aplicadas na área. Nela o aluno aprende a desenvolver soluções em redes industriais, aplicar acionamentos eletrônicos e projetar sistemas supervisórios. Ao final da disciplina é capaz de projetar solução em sistemas supervisórios, e considerar as etapas de teste, verificação, validação, certificação e operação. ",
+    "preRequisito": ["EEL6005"],
     "prepara": [],
     "requer": ["EEL6005"],
+    "trilha": "Eletrônica",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "NCM018",
+    "nome": "Empreendedorismo",
+    "periodo": 7,
+    "ementa": "Disciplina que aborda fundamentos de empreendedorismo e inovação.",
+    "preRequisito": null,
+    "prepara": [],
+    "requer": [],
+    "trilha": [],
+    "carga": 30,
+    "aulasSemanais": 2
+  },
+  {
+    "id": "OPT028",
+    "nome": "Sistemas Reconfiguráveis",
+    "periodo": 7,
+    "ementa": "A disciplina de Sistemas Reconfiguráveis é destinada a discentes a partir do 7º período e aborda aspectos gerais de modelagem e simulação. Nela o aluno aprende a desenvolver máquinas de estado através de projetos e simulações. Ao final da disciplina é capaz de criar sistemas reconfiguráveis projetando máquinas de estado, além de trabalhar em equipe.",
+    "preRequisito": null,
+    "prepara": ["OPT034"],
+    "requer": [],
+    "trilha": "Computação",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT029",
+    "nome": "Instrumentação Industrial",
+    "periodo": 7,
+    "ementa": "A disciplina de Instrumentação Industrial é destinada a discentes a partir do 7º período e aborda aspectos de instrumentação e redes industriais. Nela o aluno aprende a avaliar rede industrial e instrumentação industrial, bem como indicar os sensores e atuadores para a aplicação.  Ao final da disciplina é capaz de analisar a integração hardware/software para a aplicação, e analisar testes de verificação, validação e certificação de redes e instrumentos industriais. ",
+    "preRequisito": null,
+    "prepara": ["OPT035","OPT036"],
+    "requer": [],
+    "trilha": "Industrial",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT030",
+    "nome": "Fontes Chaveadas e Inverores",
+    "periodo": 7,
+    "ementa": "A disciplina de Fontes Chaveadas e Inversores é destinada a discentes a partir do 7º período e aborda aspectos gerais de modulação, modelagem e projeto. Nela o aluno aprende a projetar fontes chaveadas e inversores.  Ao final da disciplina é capaz de criar solução em fontes chaveadas e inversores, trabalhar em equipe e realizar testes, verificação, validação e certificação dos equipamentos pertinentes.",
+    "preRequisito": ["EEL6003"],
+    "prepara": ["OPT035","OPT036"],
+    "requer": [],
     "trilha": "Industrial",
     "carga": 60,
     "aulasSemanais": 4
@@ -497,7 +546,7 @@
     "periodo": 7,
     "ementa": "Gestão e manutenção de equipamentos hospitalares, normas e padrões (ANVISA, NBR/IEC), infraestrutura hospitalar (gases medicinais, sistemas de esterilização, segurança), organização do setor de engenharia clínica e gestão de parque tecnológico.",
     "preRequisito": null,
-    "prepara": ["EEL8004"],
+    "prepara": ["OPT037","OPT037"],
     "requer": [],
     "trilha": "Biomédica",
     "carga": 60,
@@ -509,9 +558,21 @@
     "periodo": 7,
     "ementa": "Projeto de instrumentação aplicada à eletrofisiologia; uso de sensores e atuadores biomédicos; aquisição e análise de sinais biomédicos; integração hardware/software; testes, validação e certificação de dispositivos.",
     "preRequisito": null,
-    "prepara": ["EEL8004", "EEL8005"],
+    "prepara": ["OPT037","OPT037"],
     "requer": ["EEL5005", "EEL6002"],
     "trilha": "Biomédica",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT093",
+    "nome": "Sistemas Embarcados 1",
+    "periodo": 7,
+    "ementa": "A disciplina de Sistemas Embarcados 1 é destinada a discentes a partir do 7º período e aborda aspectos de sistemas operacionais e princípios de sistemas embarcados. Nela o aluno aprende a analisar sistemas operacionais aplicados à sistemas embarcados, bem como a sincronização, concorrência e comunicação de processos, além de aprender a sincronização hardware/software para estes sistemas. Ao final da disciplina é capaz de integrar hardware e software, além de testar, validar, verificar e certificar o processo desenvolvido. ",
+    "preRequisito": ["EEL6001"],
+    "prepara": ["OPT034"],
+    "requer": ["EEL6001"],
+    "trilha": "Computação",
     "carga": 60,
     "aulasSemanais": 4
   },
@@ -540,42 +601,6 @@
     "aulasSemanais": 6
   },
   {
-    "id": "NCM018",
-    "nome": "Empreendedorismo",
-    "periodo": 7,
-    "ementa": "Disciplina que aborda fundamentos de empreendedorismo e inovação.",
-    "preRequisito": null,
-    "prepara": [],
-    "requer": [],
-    "trilha": [],
-    "carga": 30,
-    "aulasSemanais": 2
-  },
-  {
-    "id": "EEL8005",
-    "nome": "Imagens Médicas",
-    "periodo": 8,
-    "ementa": "Métodos de imagem (Raio-X, TC, RM, cintilografia, ultrassom); processamento digital de imagens; reconstrução de imagens médicas; conceitos de DICOM e PACS; avaliação de qualidade e interpretação.",
-    "preRequisito": null,
-    "prepara": [],
-    "requer": ["EEL6002", "OPT032", "OPT031"],
-    "trilha": "Biomédica",
-    "carga": 60,
-    "aulasSemanais": 4
-  },
-  {
-    "id": "EEL8004",
-    "nome": "Tecnologias Assistivas",
-    "periodo": 8,
-    "ementa": "Projeto de soluções assistivas (ex.: dispositivos de audiologia), normas técnicas, processo de projeto, teste, verificação, validação e certificação.",
-    "preRequisito": null,
-    "prepara": [],
-    "requer": ["OPT032", "OPT031"],
-    "trilha": "Biomédica",
-    "carga": 60,
-    "aulasSemanais": 4
-  },
-  {
     "id": "EEL8001",
     "nome": "Telecomunicações",
     "periodo": 8,
@@ -600,6 +625,78 @@
     "aulasSemanais": 4
   },
   {
+    "id": "OPT033",
+    "nome": "Processamento Digital de Sinais 2",
+    "periodo": 8,
+    "ementa": "A disciplina de Processamento Digital de Sinais 2 é destinada a discentes a partir do 8º período e aborda aspectos gerais de Inteligência Artificial. Nela o aluno aprende a avaliar aplicação de IA em PDS, Redes Neurais Artificiais e Reconhecimento de Padrões.  Ao final da disciplina é capaz de testar, verificar, validar e certificar soluções apresentadas para problemas de contexto real. ",
+    "preRequisito": null,
+    "prepara": [],
+    "requer": [],
+    "trilha": "Computação",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT034",
+    "nome": "Sistemas Embarcados 2",
+    "periodo": 8,
+    "ementa": "A disciplina de Sistemas Embarcados 2 é destinada a discentes a partir do 8º período e aborda aspectos gerias de sistemas embarcados em tempo real. Nela o aluno aprende a produzir sistemas embarcados para execução em tempo real. Ao final da disciplina é capaz de projetar e operar solução para estes sistemas. ",
+    "preRequisito": ["OPT028","OPT093"],
+    "prepara": [],
+    "requer": [],
+    "trilha": "Computação",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT035",
+    "nome": "Smart Grids",
+    "periodo": 8,
+    "ementa": "A disciplina de Smart Grids é destinada a discentes a partir do 8º período e aborda aspectos gerais de redes inteligentes e seus componentes. Nela o aluno aprende a avaliar fontes alternativas, redes elétricas inteligentes, microrredes e cenários: nacional e internacional.  Ao final da disciplina é capaz de analisar solução em smart grids, e considerar o contexto externo, social e ambiental envolvido.",
+    "preRequisito": ["OPT029","OPT030"],
+    "prepara": [],
+    "requer": [],
+    "trilha": "Industrial",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT036",
+    "nome": "Controle Inteligente",
+    "periodo": 8,
+    "ementa": "A disciplina de Controle Inteligente é destinada a discentes a partir do 8º período e aborda aspectos de sistemas inteligentes. Nela o aluno aprende a avaliar sistemas inteligentes, bem como analisar a lógica Fuzzy em controle de sistemas. Ao final da disciplina é capaz de realizar análise com incerteza, implementar software pertinente ao sistema, além de testar, validar, verificar e certificar o processo desenvolvido. ",
+    "preRequisito": ["OPT029","OPT030"],
+    "prepara": [],
+    "requer": [],
+    "trilha": "Industrial",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT037",
+    "nome": "Imagens Médicas",
+    "periodo": 8,
+    "ementa": "Métodos de imagem (Raio-X, TC, RM, cintilografia, ultrassom); processamento digital de imagens; reconstrução de imagens médicas; conceitos de DICOM e PACS; avaliação de qualidade e interpretação.",
+    "preRequisito": ["OPT031", "OPT032"],
+    "prepara": [],
+    "requer": ["EEL6002", "OPT032", "OPT031"],
+    "trilha": "Biomédica",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
+    "id": "OPT38",
+    "nome": "Tecnologias Assistivas",
+    "periodo": 8,
+    "ementa": "Projeto de soluções assistivas (ex.: dispositivos de audiologia), normas técnicas, processo de projeto, teste, verificação, validação e certificação.",
+    "preRequisito": ["OPT031", "OPT032"],
+    "prepara": [],
+    "requer": ["OPT031", "OPT032"],
+    "trilha": "Biomédica",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
     "id": "OPT001",
     "nome": "Trilha",
     "periodo": 8,
@@ -614,7 +711,7 @@
   {
     "id": "EEL8003",
     "nome": "Projetos Eletrônicos 2",
-    "periodo": 8,
+    "periodo": 9,
     "ementa": "Segunda disciplina da sequência de projects, com maior complexidade técnica.",
     "preRequisito": "EEL6006",
     "prepara": ["EEL9005"],
@@ -648,6 +745,18 @@
     "aulasSemanais": 2
   },
   {
+    "id": "EEL9004",
+    "nome": "Trabalho de Conclusão de Curso",
+    "periodo": 9,
+    "ementa": "Regulamentado pela norma complementar de TCC do curso de Engenharia Eletrônica.",
+    "preRequisito": null,
+    "prepara": [],
+    "requer": [],
+    "trilha": "Eletrônica",
+    "carga": 60,
+    "aulasSemanais": 4
+  },
+  {
     "id": "OPT002",
     "nome": "Optativa Colégio de Humanidades",
     "periodo": 9,
@@ -660,9 +769,9 @@
     "aulasSemanais": 6
   },
   {
-    "id": "EEL9005",
+    "id": "EEL9003",
     "nome": "Projetos Eletrônicos 3",
-    "periodo": 9,
+    "periodo": 10,
     "ementa": "Terceira e última disciplina da sequência de projetos, com complexidade máxima e integração completa dos conhecimentos do curso.",
     "preRequisito": "EEL8003",
     "prepara": [],
@@ -670,18 +779,6 @@
     "trilha": "Interdisciplinar",
     "carga": 150,
     "aulasSemanais": 10
-  },
-  {
-    "id": "EEL9004",
-    "nome": "Trabalho de Conclusão de Curso",
-    "periodo": 10,
-    "ementa": "Regulamentado pela norma complementar de TCC do curso de Engenharia Eletrônica.",
-    "preRequisito": null,
-    "prepara": [],
-    "requer": [],
-    "trilha": "Eletrônica",
-    "carga": 60,
-    "aulasSemanais": 4
   },
   {
     "id": "EEL7003",

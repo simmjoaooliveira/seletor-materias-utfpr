@@ -500,6 +500,20 @@ function SelecaoPeriodoMaterias() {
     );
   }
 
+  function marcarTodasMaterias() {
+    const codigosDoPeriodo = materiasFiltradas.map(m => m.codigo);
+    setMateriasConcluidas((prev) => {
+      const novas = [...prev];
+      codigosDoPeriodo.forEach(codigo => {
+        // Só adiciona se já não estiver na lista, para evitar duplicatas
+        if (!novas.includes(codigo)) {
+          novas.push(codigo);
+        }
+      });
+      return novas;
+    });
+  }
+
   function abrirDetalhes(materia) {
     setMateriaDetalhada(materia);
   }
@@ -1001,7 +1015,7 @@ function SelecaoPeriodoMaterias() {
                 </span>
               </motion.h2>
               
-              {materiasFiltradas.some(m => materiasConcluidas.includes(m.codigo)) && (
+              {/*materiasFiltradas.some(m => materiasConcluidas.includes(m.codigo)) && (
                 <motion.button
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -1016,7 +1030,46 @@ function SelecaoPeriodoMaterias() {
                   <span className="hidden sm:inline">Desmarcar todas</span>
                   <span className="sm:hidden">Limpar</span>
                 </motion.button>
-              )}
+              )*/}
+              {/* Container para alinhar os botões de ação à direita */}
+              <div className="flex items-center gap-2">
+                
+                {/*Botão Marcar Todas (Aparece se houver alguma desmarcada) */}
+                {materiasFiltradas.some(m => !materiasConcluidas.includes(m.codigo)) && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    onClick={marcarTodasMaterias}
+                    className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg text-xs sm:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    title="Marcar todas as matérias deste período"
+                  >
+                    <span>✅</span>
+                    <span className="hidden sm:inline">Marcar todas</span>
+                    <span className="sm:hidden">Marcar</span>
+                  </motion.button>
+                )}
+
+                {/*Botão Desmarcar Todas (Aparece se houver alguma marcada) */}
+                {materiasFiltradas.some(m => materiasConcluidas.includes(m.codigo)) && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    onClick={desmarcarTodasMaterias}
+                    className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-lg text-xs sm:text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    title="Desmarcar todas as matérias deste período"
+                  >
+                    <span>🗑️</span>
+                    <span className="hidden sm:inline">Desmarcar todas</span>
+                    <span className="sm:hidden">Limpar</span>
+                  </motion.button>
+                )}
+              </div>
             </div>
 
             <AnimatePresence>
@@ -1049,17 +1102,16 @@ function SelecaoPeriodoMaterias() {
                         delay: index * 0.05,
                         ease: [0.22, 1, 0.36, 1]
                       }}
-                      className={`bg-white border-l-4 rounded-2xl p-4 sm:p-5 shadow-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden group ${m.trilha ? getTrilhaBorderColor(m.trilha) : 'border-l-gray-300'} ${materiasConcluidas.includes(m.codigo) ? "ring-2 ring-green-400/50 bg-gradient-to-br from-green-50/50 to-white" : "hover:bg-gradient-to-br hover:from-blue-50/30 hover:to-white"}`}
-                      whileHover={{ scale: 1.03, y: -6, rotateY: 2 }}
-                      whileTap={{ scale: 0.98 }}
+                      className={`bg-white border-l-4 rounded-2xl p-4 sm:p-5 shadow-lg transition-all duration-300 relative overflow-hidden group ${m.trilha ? getTrilhaBorderColor(m.trilha) : 'border-l-gray-300'} ${materiasConcluidas.includes(m.codigo) ? "ring-2 ring-green-400/50 bg-gradient-to-br from-green-50/50 to-white" : "hover:bg-gradient-to-br hover:from-blue-50/30 hover:to-white"}`}
+                      whileTap={{ scale: 1 }}
                     >
-                      {/* Efeito de brilho no hover */}
+                      {/* Efeito de brilho no hover 
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100"
                         initial={{ x: '-100%' }}
                         whileHover={{ x: '100%' }}
                         transition={{ duration: 0.6 }}
-                      />
+                      />*/}
                       <div className="space-y-3 relative z-10">
                         <div>
                           <div className="flex items-start justify-between gap-2 mb-1">
@@ -1628,18 +1680,17 @@ function SelecaoPeriodoMaterias() {
                           delay: index * 0.05,
                           ease: [0.22, 1, 0.36, 1]
                         }}
-                        className="bg-gradient-to-br from-indigo-50/80 via-purple-50/60 to-pink-50/40 backdrop-blur-sm border-2 border-indigo-200/50 rounded-2xl p-4 sm:p-5 shadow-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden group cursor-pointer"
-                        whileHover={{ scale: 1.03, y: -6 }}
-                        whileTap={{ scale: 0.98 }}
+                        className="bg-gradient-to-br from-indigo-50/80 via-purple-50/60 to-pink-50/40 backdrop-blur-sm border-2 border-indigo-200/50 rounded-2xl p-4 sm:p-5 shadow-lg transition-all duration-300 relative overflow-hidden group cursor-pointer"
+                        whileTap={{ scale: 1 }}
                         onClick={() => abrirDetalhes(m)}
                       >
-                        {/* Efeito de brilho animado */}
+                        {/* Efeito de brilho animado 
                         <motion.div
                           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100"
                           initial={{ x: '-100%' }}
                           whileHover={{ x: '100%' }}
                           transition={{ duration: 0.8 }}
-                        />
+                        />*/}
                         <div className="relative z-10">
                           <div className="flex items-start justify-between mb-2">
                             <h3 className="text-sm sm:text-base font-semibold flex-1">{m.nome}</h3>

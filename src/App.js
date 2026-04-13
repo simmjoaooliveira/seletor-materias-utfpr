@@ -275,14 +275,8 @@ function TelaInicial() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all cursor-pointer group relative overflow-hidden"
-              whileHover={{ 
-                scale: 1.05,
-                borderColor: 'rgba(59, 130, 246, 0.5)',
-                boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
-              }}
+              className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 relative overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-blue-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               <div className="text-2xl mb-2 relative z-10">💻</div>
               <h3 className="text-white font-semibold text-sm sm:text-base mb-1 relative z-10">Engenharia de Computação</h3>
               <p className="text-gray-300 text-xs sm:text-sm relative z-10">Sistemas computacionais, software e hardware.</p>
@@ -292,14 +286,8 @@ function TelaInicial() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all cursor-pointer group relative overflow-hidden"
-              whileHover={{ 
-                scale: 1.05,
-                borderColor: 'rgba(249, 115, 22, 0.5)',
-                boxShadow: '0 0 20px rgba(249, 115, 22, 0.3)',
-              }}
+              className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 relative overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               <div className="text-2xl mb-2 relative z-10">🏭</div>
               <h3 className="text-white font-semibold text-sm sm:text-base mb-1 relative z-10">Engenharia Industrial</h3>
               <p className="text-gray-300 text-xs sm:text-sm relative z-10">Otimização de processos e sistemas produtivos.</p>
@@ -309,14 +297,8 @@ function TelaInicial() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
-              className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/15 transition-all cursor-pointer group relative overflow-hidden"
-              whileHover={{ 
-                scale: 1.05,
-                borderColor: 'rgba(236, 72, 153, 0.5)',
-                boxShadow: '0 0 20px rgba(236, 72, 153, 0.3)',
-              }}
+              className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 relative overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-pink-500/10 to-pink-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
               <div className="text-2xl mb-2 relative z-10">🏥</div>
               <h3 className="text-white font-semibold text-sm sm:text-base mb-1 relative z-10">Engenharia Biomédica</h3>
               <p className="text-gray-300 text-xs sm:text-sm relative z-10">Instrumentação médica e equipamentos de saúde.</p>
@@ -354,13 +336,14 @@ function TelaInicial() {
           >
             <span className="flex items-center gap-2">
               <span>🔌</span>
-              <span>Ver Matérias</span>
+              <span>Matérias</span>
               <span>⚡</span>
             </span>
           </motion.button>
 
           {/* Botões de redes sociais */}
           <div className="flex gap-4" style={{ position: 'relative', zIndex: 51 }}>
+            {/* Botão Instagram */}
             <motion.button
               onClick={() => setMostrarModalInstagram(true)}
               className="px-6 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 cursor-pointer"
@@ -371,6 +354,22 @@ function TelaInicial() {
               <span className="text-xl">📷</span>
               <span className="hidden sm:inline">Instagram</span>
             </motion.button>
+            
+            {/* NOVO: Botão do Site Oficial */}
+            <motion.a
+              href="https://www.utfpr.edu.br/cursos/coordenacoes/graduacao/campo-mourao/cm-engenharia-eletronica"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-4 bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 cursor-pointer no-underline"
+              whileHover={{ scale: 1.1, rotate: -5 }}
+              whileTap={{ scale: 0.9 }}
+              style={{ pointerEvents: 'auto', position: 'relative', zIndex: 52 }}
+            >
+              <span className="text-xl">🏛️</span>
+              <span className="hidden sm:inline">Site do Curso</span>
+            </motion.a>
+
+            
           </div>
         </motion.div>
       </div>
@@ -673,6 +672,7 @@ function SelecaoPeriodoMaterias() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 p-2 sm:p-4 lg:p-8 relative overflow-hidden">
       {/* Background elegante com gradientes animados */}
+      {/*
       <motion.div
         className="fixed inset-0 pointer-events-none z-0"
         animate={{
@@ -688,6 +688,19 @@ function SelecaoPeriodoMaterias() {
           ease: "easeInOut",
         }}
       />
+      */}
+
+      {/* Background estático e leve */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50" />
+
+      {/* Padrão de grid sutil */}
+      <div className="fixed inset-0 opacity-[0.02] pointer-events-none z-0" style={{
+        backgroundImage: `
+          linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px',
+      }} />
 
       {/* Padrão de grid sutil */}
       <div className="fixed inset-0 opacity-[0.02] pointer-events-none z-0" style={{
@@ -810,14 +823,14 @@ function SelecaoPeriodoMaterias() {
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {p.id === periodoSelecionado && (
+                  {/*p.id === periodoSelecionado && (
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0"
                       initial={{ x: '-100%' }}
                       animate={{ x: '100%' }}
                       transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}
                     />
-                  )}
+                  )*/}
                   <span className="relative z-10 whitespace-nowrap">{p.label}</span>
                 </motion.button>
               ))}
@@ -1857,7 +1870,7 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
               source: materia.codigo,
               target: materiaDestino.codigo,
               type: 'smoothstep',
-              animated: true,
+              animated: isConectada,
               style: { 
                 stroke: corSeta, 
                 strokeWidth: isConectada ? 4 : 2,
@@ -1880,7 +1893,7 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
               source: materiaRequerida.codigo,
               target: materia.codigo,
               type: 'smoothstep',
-              animated: false,
+              animated: isConectada,
               style: { 
                 stroke: '#60a5fa', 
                 strokeWidth: isConectada ? 3 : 1.5,

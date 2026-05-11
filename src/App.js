@@ -355,7 +355,7 @@ function TelaInicial() {
               <span className="hidden sm:inline">Instagram</span>
             </motion.button>
             
-            {/* NOVO: Botão do Site Oficial */}
+            {/* Botão do Site Oficial */}
             <motion.a
               href="https://www.utfpr.edu.br/cursos/coordenacoes/graduacao/campo-mourao/cm-engenharia-eletronica"
               target="_blank"
@@ -369,6 +369,18 @@ function TelaInicial() {
               <span className="hidden sm:inline">Site do Curso</span>
             </motion.a>
 
+            {/* Botão Fluxograma */}
+            <motion.button
+              onClick={() => navigate('/selecao_materia', { state: { abrirFluxograma: true } })}
+              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-lg sm:text-xl rounded-xl shadow-2xl transform transition-all cursor-pointer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <span className="flex items-center gap-2">
+                <span>📊</span>
+                <span>Fluxograma</span>
+              </span>
+            </motion.button>
             
           </div>
         </motion.div>
@@ -801,14 +813,6 @@ function SelecaoPeriodoMaterias() {
                 <p className="text-xs sm:text-sm text-gray-600 mt-1">Escolha o semestre para ver e marcar as matérias que você já fez.</p>
               </div>
             </div>
-            <motion.button
-              onClick={() => setMostrarFluxograma(true)}
-              className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-medium text-sm shadow-lg hover:shadow-xl transition-all"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              📊 Ver Fluxograma
-            </motion.button>
           </div>
         </motion.div>
 

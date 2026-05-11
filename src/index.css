@@ -15,3 +15,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ========================================================
+   CUSTOMIZAÇÃO DA BARRA DE ROLAGEM PARA O TOTEM TOUCH
+   ======================================================== */
+
+/* 1. Define a largura total da barra (bem mais grossa para os dedos) */
+::-webkit-scrollbar {
+  width: 35px;  /* Largura da barra vertical */
+  height: 35px; /* Altura da barra horizontal (se existir) */
+}
+
+/* 2. Estiliza o "trilho" (o fundo por onde a barra corre) */
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1); /* Fundo levemente transparente */
+  border-radius: 20px; /* Deixa os cantos arredondados */
+}
+
+/* 3. Estiliza o "polegar" (a parte que você puxa com o dedo) */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #6366f1, #a855f7); /* Cores combinando com o site */
+  border-radius: 20px; /* Cantos bem arredondados */
+  border: 6px solid #f8fafc; /* Cria um "espaço" em volta para não colar nas bordas */
+}
+
+/* 4. Estiliza o "polegar" quando está sendo tocado/puxado */
+::-webkit-scrollbar-thumb:hover, 
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(to bottom, #4f46e5, #9333ea); /* Fica um pouco mais escuro */
+}

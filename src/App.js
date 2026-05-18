@@ -357,25 +357,8 @@ function TelaInicial() {
               </div>
 
               <div className="space-y-3">
-                <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                  <p className="text-xs text-gray-500 mb-1">Link do Instagram:</p>
-                  <a
-                    href="https://www.instagram.com/eletronicautfprcm/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-pink-600 hover:text-pink-700 font-medium break-all"
-                  >
-                    instagram.com/eletronicautfprcm
-                  </a>
-                </div>
-                <motion.a
-                  href="https://www.instagram.com/eletronicautfprcm/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold rounded-xl text-center shadow-lg transition-all"
-                >
-                  Abrir no Instagram
-                </motion.a>
+                
+
                 <motion.button
                   onClick={() => setMostrarModalInstagram(false)}
                   className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all"

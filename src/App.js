@@ -121,6 +121,7 @@ const { materiasPorPeriodo: MATERIAS_POR_PERIODO, todasMaterias: TODAS_MATERIAS 
 function TelaInicial() {
   const navigate = useNavigate();
   const [mostrarModalInstagram, setMostrarModalInstagram] = useState(false);
+  const [mostrarModalSite, setMostrarModalSite] = useState(false);
 
   const totalMaterias = Object.values(MATERIAS_POR_PERIODO).flat().length;
   const totalPeriodos = PERIODOS.length;
@@ -285,17 +286,15 @@ function TelaInicial() {
               <span className="hidden sm:inline">Instagram</span>
             </motion.button>
             
-            <motion.a
-              href="https://www.utfpr.edu.br/cursos/coordenacoes/graduacao/campo-mourao/cm-engenharia-eletronica"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-4 bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 cursor-pointer no-underline"
+            <motion.button
+              onClick={() => setMostrarModalSite(true)}
+              className="px-6 py-4 bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 cursor-pointer"
               whileHover={{ scale: 1.1, rotate: -5 }}
               whileTap={{ scale: 0.9 }}
             >
               <span className="text-xl">🏛️</span>
               <span className="hidden sm:inline">Site do Curso</span>
-            </motion.a>
+            </motion.button>
 
             <motion.button
               onClick={() => navigate('/fluxograma')} // <--- ROTA ATUALIZADA AQUI
@@ -311,6 +310,62 @@ function TelaInicial() {
           </div>
         </motion.div>
       </div>
+
+      {/* Modal do Site da UTFPR embutido */}
+      <AnimatePresence>
+        {mostrarModalSite && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setMostrarModalSite(false)}
+            style={{ zIndex: 10005 }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white rounded-3xl w-full h-[90vh] shadow-2xl flex flex-col overflow-hidden max-w-7xl"
+              style={{ zIndex: 10006 }}
+              onClick={(e) => e.stopPropagation()} // Impede que clicar dentro da janela a feche
+            >
+              {/* Header do Navegador Embutido */}
+              <div className="flex items-center justify-between p-4 bg-slate-100 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🏛️</span>
+                  <h2 className="text-lg sm:text-xl font-bold text-slate-800">
+                    Portal UTFPR - Engenharia Eletrônica
+                  </h2>
+                </div>
+                <motion.button
+                  onClick={() => setMostrarModalSite(false)}
+                  className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition-colors shadow-md flex items-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Fechar
+                </motion.button>
+              </div>
+
+              {/* Corpo do Site (Iframe) */}
+              <div className="flex-1 w-full bg-white relative">
+                {/* Dica de carregamento enquanto o iframe baixa o site da UTFPR */}
+                <div className="absolute inset-0 flex items-center justify-center -z-10 bg-gray-50">
+                  <p className="text-gray-400 font-medium animate-pulse">Carregando portal...</p>
+                </div>
+                
+                <iframe
+                  src="https://www.utfpr.edu.br/cursos/coordenacoes/graduacao/campo-mourao/cm-engenharia-eletronica"
+                  title="Site Oficial UTFPR"
+                  className="w-full h-full border-none z-10 relative"
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {mostrarModalInstagram && (
@@ -371,6 +426,7 @@ function TelaInicial() {
         )}
       </AnimatePresence>
     </div>
+
   );
 }
 

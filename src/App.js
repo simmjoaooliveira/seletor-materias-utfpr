@@ -73,6 +73,9 @@ function processarMaterias() {
     
     const codigo = materia.id || materia.nome; 
     
+    // Função auxiliar para garantir que tudo vire um Array certinho
+    const formatarArray = (item) => Array.isArray(item) ? item : (item ? [item] : []);
+
     const materiaProcessada = {
       codigo: codigo,
       nome: materia.nome,
@@ -81,14 +84,14 @@ function processarMaterias() {
       descricaoDetalhada: materia.ementa || `Esta disciplina faz parte do ${materia.periodo}º período do curso de Engenharia Eletrônica.`,
       carga: materia.carga ? `${materia.carga}h` : "—",
       aulasSemanais: materia.aulasSemanais || null,
-      prereq: materia.preRequisito ? [materia.preRequisito] : [],
+      prereq: formatarArray(materia.preRequisito), // Agora lê múltiplos pré-requisitos!
       professor: "—",
       horario: "—",
       sala: "—",
       ementa: materia.ementa || null,
       preRequisito: materia.preRequisito || null,
-      prepara: materia.prepara || [],
-      requer: materia.requer || [],
+      prepara: formatarArray(materia.prepara),
+      requer: formatarArray(materia.requer),
       trilha: materia.trilha || null
     };
     
@@ -97,16 +100,18 @@ function processarMaterias() {
   });
   
   Object.values(materiasPorPeriodo).flat().forEach(m => {
-    if (m.preRequisito) {
-      let preReqMateria = todasMaterias[m.preRequisito];
-      
-      if (!preReqMateria) {
-        preReqMateria = Object.values(todasMaterias).find(mat => mat.nome === m.preRequisito);
-      }
-      
-      if (preReqMateria) {
-        m.prereq = [preReqMateria.codigo];
-      }
+    if (m.prereq && m.prereq.length > 0) {
+      const prereqsValidos = [];
+      m.prereq.forEach(req => {
+        let preReqMateria = todasMaterias[req];
+        if (!preReqMateria) {
+          preReqMateria = Object.values(todasMaterias).find(mat => mat.nome === req);
+        }
+        if (preReqMateria) {
+          prereqsValidos.push(preReqMateria.codigo);
+        }
+      });
+      m.prereq = prereqsValidos;
     }
   });
   
@@ -297,7 +302,7 @@ function TelaInicial() {
             </motion.button>
 
             <motion.button
-              onClick={() => navigate('/fluxograma')} // <--- ROTA ATUALIZADA AQUI
+              onClick={() => navigate('/fluxograma')}
               className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-lg sm:text-xl rounded-xl shadow-2xl transform transition-all cursor-pointer"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -328,7 +333,7 @@ function TelaInicial() {
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className="bg-white rounded-3xl w-full h-[90vh] shadow-2xl flex flex-col overflow-hidden max-w-7xl"
               style={{ zIndex: 10006 }}
-              onClick={(e) => e.stopPropagation()} // Impede que clicar dentro da janela a feche
+              onClick={(e) => e.stopPropagation()}
             >
               {/* Header do Navegador Embutido */}
               <div className="flex items-center justify-between p-4 bg-slate-100 border-b border-gray-200">
@@ -350,7 +355,6 @@ function TelaInicial() {
 
               {/* Corpo do Site (Iframe) */}
               <div className="flex-1 w-full bg-white relative">
-                {/* Dica de carregamento enquanto o iframe baixa o site da UTFPR */}
                 <div className="absolute inset-0 flex items-center justify-center -z-10 bg-gray-50">
                   <p className="text-gray-400 font-medium animate-pulse">Carregando portal...</p>
                 </div>
@@ -412,8 +416,17 @@ function TelaInicial() {
               </div>
 
               <div className="space-y-3">
-                
-
+                <div className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                  <p className="text-xs text-gray-500 mb-1">Link do Instagram:</p>
+                  <a
+                    href="https://www.instagram.com/eletronicautfprcm/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-pink-600 hover:text-pink-700 font-medium break-all"
+                  >
+                    instagram.com/eletronicautfprcm
+                  </a>
+                </div>
                 <motion.button
                   onClick={() => setMostrarModalInstagram(false)}
                   className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-all"
@@ -426,7 +439,6 @@ function TelaInicial() {
         )}
       </AnimatePresence>
     </div>
-
   );
 }
 
@@ -1610,6 +1622,7 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
 
   const edges = useMemo(() => {
     const edgesList = [];
+    const addedEdges = new Set();
     const codigosExistentes = new Set(nodes.map(n => n.id));
     
     const isConectadaSelecionada = (source, target) => {
@@ -1619,39 +1632,74 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
     materiasFiltradas.forEach((materia) => {
       if (!codigosExistentes.has(materia.codigo)) return;
 
+      // 1. Setas baseadas no "prepara" (Sólida: Vai da origem pro destino)
       if (materia.prepara && materia.prepara.length > 0) {
         materia.prepara.forEach((idPrepara) => {
           const materiaDestino = materiasFiltradas.find(m => m.codigo === idPrepara);
           if (materiaDestino && materiaDestino.periodo > materia.periodo && codigosExistentes.has(materiaDestino.codigo)) {
-            const corSeta = getTrilhaColorHex(materia.trilha);
-            const isConectada = isConectadaSelecionada(materia.codigo, materiaDestino.codigo);
-            edgesList.push({
-              id: `${materia.codigo}-${materiaDestino.codigo}`,
-              source: materia.codigo,
-              target: materiaDestino.codigo,
-              type: 'smoothstep',
-              animated: isConectada,
-              style: { stroke: corSeta, strokeWidth: isConectada ? 4 : 2, opacity: isConectada ? 1 : 0.6 },
-              markerEnd: { type: 'arrowclosed', color: corSeta }
-            });
+            const edgeId = `${materia.codigo}-${materiaDestino.codigo}`;
+            if (!addedEdges.has(edgeId)) {
+              addedEdges.add(edgeId);
+              const corSeta = getTrilhaColorHex(materia.trilha);
+              const isConectada = isConectadaSelecionada(materia.codigo, materiaDestino.codigo);
+              edgesList.push({
+                id: edgeId,
+                source: materia.codigo,
+                target: materiaDestino.codigo,
+                type: 'bezier',
+                animated: !!isConectada,
+                style: { stroke: corSeta, strokeWidth: isConectada ? 4 : 2, opacity: isConectada ? 1 : 0.6 },
+                markerEnd: { type: 'arrowclosed', color: corSeta }
+              });
+            }
+          }
+        });
+      }
+
+      // 2. Setas baseadas no "preRequisito" (Sólida: Puxa de trás pra frente) -> ISSO RESOLVE SEU PROBLEMA
+      if (materia.prereq && materia.prereq.length > 0) {
+        materia.prereq.forEach((idPre) => {
+          const materiaOrigem = materiasFiltradas.find(m => m.codigo === idPre);
+          if (materiaOrigem && materiaOrigem.periodo < materia.periodo && codigosExistentes.has(materiaOrigem.codigo)) {
+            const edgeId = `${materiaOrigem.codigo}-${materia.codigo}`;
+            if (!addedEdges.has(edgeId)) {
+              addedEdges.add(edgeId);
+              const corSeta = getTrilhaColorHex(materiaOrigem.trilha);
+              const isConectada = isConectadaSelecionada(materiaOrigem.codigo, materia.codigo);
+              edgesList.push({
+                id: edgeId,
+                source: materiaOrigem.codigo,
+                target: materia.codigo,
+                type: 'bezier',
+                animated: !!isConectada,
+                style: { stroke: corSeta, strokeWidth: isConectada ? 4 : 2, opacity: isConectada ? 1 : 0.6 },
+                markerEnd: { type: 'arrowclosed', color: corSeta }
+              });
+            }
           }
         });
       }
       
+      // 3. Setas baseadas no "requer" (Tracejada)
       if (materia.requer && materia.requer.length > 0) {
         materia.requer.forEach((idRequer) => {
           const materiaRequerida = materiasFiltradas.find(m => m.codigo === idRequer);
           if (materiaRequerida && materiaRequerida.periodo < materia.periodo && codigosExistentes.has(materiaRequerida.codigo)) {
-            const isConectada = isConectadaSelecionada(materiaRequerida.codigo, materia.codigo);
-            edgesList.push({
-              id: `${materiaRequerida.codigo}-req-${materia.codigo}`,
-              source: materiaRequerida.codigo,
-              target: materia.codigo,
-              type: 'smoothstep',
-              animated: isConectada,
-              style: { stroke: '#60a5fa', strokeWidth: isConectada ? 3 : 1.5, strokeDasharray: '5,5', opacity: isConectada ? 1 : 0.6 },
-              markerEnd: { type: 'arrowclosed', color: '#60a5fa' }
-            });
+            const edgeId = `${materiaRequerida.codigo}-${materia.codigo}`;
+            // Só adiciona a tracejada se não existir uma seta Sólida (obrigatória) já traçada ali
+            if (!addedEdges.has(edgeId)) {
+              addedEdges.add(edgeId);
+              const isConectada = isConectadaSelecionada(materiaRequerida.codigo, materia.codigo);
+              edgesList.push({
+                id: `req-${edgeId}`,
+                source: materiaRequerida.codigo,
+                target: materia.codigo,
+                type: 'bezier',
+                animated: !!isConectada,
+                style: { stroke: '#60a5fa', strokeWidth: isConectada ? 3 : 1.5, strokeDasharray: '5,5', opacity: isConectada ? 1 : 0.6 },
+                markerEnd: { type: 'arrowclosed', color: '#60a5fa' }
+              });
+            }
           }
         });
       }
@@ -1675,7 +1723,18 @@ function FluxogramaView({ todasMaterias, trilhaFiltro, getTrilhaColor, getTrilha
       <div ref={containerRef} style={{ width: '100%', height: '100%', minHeight: '600px' }}>
         {isReady && (
           <div style={{ width: dimensions.width + 'px', height: dimensions.height + 'px', minWidth: '800px', minHeight: '600px' }}>
-            <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView fitViewOptions={{ padding: 0.3, minZoom: 0.15, maxZoom: 2.0 }}>
+            <ReactFlow 
+              key={trilhaFiltro || 'todas'} /* ISSO MATA OS ARTEFATOS FANTASMAS */
+              nodes={nodes} 
+              edges={edges} 
+              nodeTypes={nodeTypes} 
+              fitView 
+              fitViewOptions={{ padding: 0.3, minZoom: 0.15, maxZoom: 2.0 }}
+              panOnDrag={true}      /* Melhora o touch */
+              panOnScroll={true}    /* Melhora o touch */
+              zoomOnScroll={false}  /* Evita confusão no touch */
+              zoomOnPinch={true}    /* Mantém zoom com 2 dedos */
+            >
               <Background color="#e5e7eb" gap={16} />
               <Controls />
             </ReactFlow>
@@ -1712,7 +1771,9 @@ const CustomNode = React.memo(({ data, selected }) => {
         textUnderlineOffset: '3px'
       }}
     >
-      <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
+      {/* PONTO DE CHEGADA: Mantido no Topo */}
+      <Handle type="target" position={Position.Left} style={{ background: '#555' }} />
+      
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1">
           <div className="font-semibold text-xs mb-1 leading-tight">{materia.nome}</div>
@@ -1728,7 +1789,9 @@ const CustomNode = React.memo(({ data, selected }) => {
           📖
         </button>
       </div>
-      <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
+      
+      {/* PONTO DE SAÍDA: Alterado de Position.Bottom para Position.Right */}
+      <Handle type="source" position={Position.Right} style={{ background: '#555' }} />
     </div>
   );
 });
@@ -1748,7 +1811,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<TelaInicial />} />
       <Route path="/selecao_materia" element={<SelecaoPeriodoMaterias />} />
-      <Route path="/fluxograma" element={<TelaFluxograma />} /> {/* ROTA NOVA AQUI */}
+      <Route path="/fluxograma" element={<TelaFluxograma />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

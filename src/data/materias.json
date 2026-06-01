@@ -679,7 +679,7 @@
     "ementa": "Métodos de imagem (Raio-X, TC, RM, cintilografia, ultrassom); processamento digital de imagens; reconstrução de imagens médicas; conceitos de DICOM e PACS; avaliação de qualidade e interpretação.",
     "preRequisito": ["OPT031", "OPT032"],
     "prepara": [],
-    "requer": ["EEL6002", "OPT032", "OPT031"],
+    "requer": ["EEL6002"],
     "trilha": "Biomédica",
     "carga": 60,
     "aulasSemanais": 4
@@ -691,7 +691,7 @@
     "ementa": "Projeto de soluções assistivas (ex.: dispositivos de audiologia), normas técnicas, processo de projeto, teste, verificação, validação e certificação.",
     "preRequisito": ["OPT031", "OPT032"],
     "prepara": [],
-    "requer": ["OPT031", "OPT032"],
+    "requer": [],
     "trilha": "Biomédica",
     "carga": 60,
     "aulasSemanais": 4

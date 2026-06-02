@@ -1814,13 +1814,21 @@ function PERIODOSText(id) {
 function TelaAdmin() {
   const navigate = useNavigate();
   
-  // Clonamos os dados originais para a memória da tela
+  // ==========================================
+  // ESTADOS DE AUTENTICAÇÃO (LOGIN)
+  // ==========================================
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginUser, setLoginUser] = useState("");
+  const [loginPass, setLoginPass] = useState("");
+  const [loginErro, setLoginErro] = useState("");
+
+  // ==========================================
+  // ESTADOS DO PAINEL DE ADMINISTRAÇÃO
+  // ==========================================
   const [materias, setMaterias] = useState(() => JSON.parse(JSON.stringify(materiasData)));
   const [materiaSelecionadaId, setMateriaSelecionadaId] = useState(null);
   const [termoBusca, setTermoBusca] = useState("");
   
-  // Coloquei o seu token como padrão no estado APENAS para facilitar seu teste local.
-  // ATENÇÃO: Apague isso e deixe vazio ("") quando for publicar o site oficialmente!
   const [token, setToken] = useState("");
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -1829,16 +1837,90 @@ function TelaAdmin() {
   const GITHUB_REPO = "seletor-materias-utfpr";
   const GITHUB_FILE_PATH = "src/data/materias.json";
 
-  // Encontra a matéria que está sendo editada no momento
+  // Função para validar o Login
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (loginUser === "daeln" && loginPass === "1234") {
+      setIsAuthenticated(true);
+      setLoginErro("");
+    } else {
+      setLoginErro("Usuário ou senha incorretos.");
+    }
+  };
+
+  // Se NÃO estiver autenticado, mostra a tela de Login
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Efeito de fundo bonitinho */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-purple-900 opacity-50"></div>
+        
+        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative z-10">
+          <div className="text-center mb-8">
+            <div className="text-5xl mb-4">🔒</div>
+            <h1 className="text-2xl font-bold text-gray-800">Acesso Restrito</h1>
+            <p className="text-sm text-gray-500 mt-1">Área exclusiva da coordenação</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Usuário</label>
+              <input
+                type="text"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all"
+                placeholder="Digite o usuário..."
+                value={loginUser}
+                onChange={(e) => setLoginUser(e.target.value)}
+                autoFocus
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Senha</label>
+              <input
+                type="password"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all"
+                placeholder="••••••••"
+                value={loginPass}
+                onChange={(e) => setLoginPass(e.target.value)}
+              />
+            </div>
+
+            {loginErro && (
+              <div className="p-3 bg-red-50 text-red-600 text-sm font-medium rounded-lg text-center animate-pulse">
+                {loginErro}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all mt-4"
+            >
+              Entrar
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <button onClick={() => navigate('/')} className="text-sm text-gray-400 hover:text-indigo-600 font-medium transition-colors">
+              ← Voltar ao Início
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // CÓDIGO DO PAINEL (Só renderiza se passar do login)
+  // ==========================================
+  
   const materiaEditando = materias.find(m => m.id === materiaSelecionadaId) || null;
 
-  // Filtra a lista da esquerda com base na busca
   const materiasFiltradas = materias.filter(m => 
     (m.nome || "").toLowerCase().includes(termoBusca.toLowerCase()) || 
     (m.id || "").toLowerCase().includes(termoBusca.toLowerCase())
   );
 
-  // Função para atualizar um campo específico da matéria selecionada
   const handleChangeCampo = (campo, valor) => {
     setMaterias(prev => prev.map(m => {
       if (m.id === materiaSelecionadaId) {
@@ -1848,16 +1930,20 @@ function TelaAdmin() {
     }));
   };
 
-  // Função especial para lidar com campos que são Listas (Arrays) como pré-requisitos
   const handleChangeArray = (campo, valorTexto) => {
-    // Transforma "OPT031, OPT032" em ["OPT031", "OPT032"]
     const arrayFormatado = valorTexto.split(',').map(item => item.trim()).filter(Boolean);
     handleChangeCampo(campo, arrayFormatado);
   };
 
+  const formatArrayToString = (valor) => {
+    if (!valor) return "";
+    if (Array.isArray(valor)) return valor.join(", ");
+    return String(valor); // Se for um texto simples, apenas retorna ele
+  };
+
   const handleAdicionarMateria = () => {
     const novaMateria = {
-      id: `NOVA_${Date.now().toString().slice(-4)}`, // ID temporário
+      id: `NOVA_${Date.now().toString().slice(-4)}`,
       nome: "Nova Disciplina",
       periodo: 1,
       ementa: "",
@@ -1879,7 +1965,6 @@ function TelaAdmin() {
     }
   };
 
-  // Função que envia as alterações para o GitHub
   const handleSalvarNoGithub = async () => {
     if (!token) {
       setStatus({ tipo: 'erro', texto: "⚠️ Insira o Token do GitHub para salvar." });
@@ -1890,7 +1975,6 @@ function TelaAdmin() {
     setStatus({ tipo: 'info', texto: "⏳ Conectando ao GitHub..." });
 
     try {
-      // 1. Pegar o SHA atual do arquivo
       const getRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
         headers: { Authorization: `token ${token}` }
       });
@@ -1900,13 +1984,12 @@ function TelaAdmin() {
       const fileData = await getRes.json();
       const fileSha = fileData.sha;
 
-      // 2. Converte as matérias atualizadas para JSON com formatação bonita
       const novoConteudoJson = JSON.stringify(materias, null, 2);
       
-      // 3. Converte para Base64 (UTF-8 safe)
-      const encodedContent = btoa(unescape(encodeURIComponent(novoConteudoJson)));
+      // Converte para base64 com suporte a acentos (UTF-8)
+      const bytes = new TextEncoder().encode(novoConteudoJson);
+      const encodedContent = btoa(String.fromCharCode(...bytes));
 
-      // 4. Envia o PUT (Update)
       setStatus({ tipo: 'info', texto: "🚀 Enviando atualização..." });
       const putRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
         method: "PUT",
@@ -1945,7 +2028,11 @@ function TelaAdmin() {
         </div>
         
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/')} className="px-4 py-2 bg-indigo-800 hover:bg-indigo-900 rounded-lg text-sm font-medium transition-colors">
+          {/* Botão de Logout */}
+          <button 
+            onClick={() => setIsAuthenticated(false)} 
+            className="px-4 py-2 bg-indigo-800 hover:bg-red-600 rounded-lg text-sm font-medium transition-colors"
+          >
             Sair
           </button>
         </div>
@@ -1957,7 +2044,7 @@ function TelaAdmin() {
           <span className="text-xl">🔑</span>
           <input
             type="password"
-            placeholder="Cole o Token do GitHub aqui..."
+            placeholder="Cole o Token Clássico do GitHub aqui..."
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"
             value={token}
             onChange={(e) => setToken(e.target.value)}
@@ -2082,17 +2169,17 @@ function TelaAdmin() {
                   
                   <div>
                     <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Pré-Requisitos Obrigatórios (Setas Sólidas)</label>
-                    <input type="text" value={(materiaEditando.preRequisito || []).join(", ")} onChange={(e) => handleChangeArray('preRequisito', e.target.value)} placeholder="Ex: EEL1001, EEL2002" className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
+                    <input type="text" value={formatArrayToString(materiaEditando.preRequisito)} onChange={(e) => handleChangeArray('preRequisito', e.target.value)} placeholder="Ex: EEL1001, EEL2002" className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
                   </div>
                   
                   <div>
                     <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Prepara Para (Matérias Futuras)</label>
-                    <input type="text" value={(materiaEditando.prepara || []).join(", ")} onChange={(e) => handleChangeArray('prepara', e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
+                    <input type="text" value={formatArrayToString(materiaEditando.prepara)} onChange={(e) => handleChangeArray('prepara', e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
                   </div>
                   
                   <div>
                     <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Requer Conhecimento De (Seta Tracejada)</label>
-                    <input type="text" value={(materiaEditando.requer || []).join(", ")} onChange={(e) => handleChangeArray('requer', e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
+                    <input type="text" value={formatArrayToString(materiaEditando.requer)} onChange={(e) => handleChangeArray('requer', e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
                   </div>
                 </div>
 

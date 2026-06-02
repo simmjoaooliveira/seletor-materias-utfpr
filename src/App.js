@@ -1809,6 +1809,309 @@ function PERIODOSText(id) {
 }
 
 // ==========================================
+// COMPONENTE EXTRA: TELA DE ADMINISTRAÇÃO (VISUAL E AMIGÁVEL)
+// ==========================================
+function TelaAdmin() {
+  const navigate = useNavigate();
+  
+  // Clonamos os dados originais para a memória da tela
+  const [materias, setMaterias] = useState(() => JSON.parse(JSON.stringify(materiasData)));
+  const [materiaSelecionadaId, setMateriaSelecionadaId] = useState(null);
+  const [termoBusca, setTermoBusca] = useState("");
+  
+  // Coloquei o seu token como padrão no estado APENAS para facilitar seu teste local.
+  // ATENÇÃO: Apague isso e deixe vazio ("") quando for publicar o site oficialmente!
+  const [token, setToken] = useState("");
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const GITHUB_OWNER = "simmjoaooliveira"; 
+  const GITHUB_REPO = "seletor-materias-utfpr";
+  const GITHUB_FILE_PATH = "src/data/materias.json";
+
+  // Encontra a matéria que está sendo editada no momento
+  const materiaEditando = materias.find(m => m.id === materiaSelecionadaId) || null;
+
+  // Filtra a lista da esquerda com base na busca
+  const materiasFiltradas = materias.filter(m => 
+    (m.nome || "").toLowerCase().includes(termoBusca.toLowerCase()) || 
+    (m.id || "").toLowerCase().includes(termoBusca.toLowerCase())
+  );
+
+  // Função para atualizar um campo específico da matéria selecionada
+  const handleChangeCampo = (campo, valor) => {
+    setMaterias(prev => prev.map(m => {
+      if (m.id === materiaSelecionadaId) {
+        return { ...m, [campo]: valor };
+      }
+      return m;
+    }));
+  };
+
+  // Função especial para lidar com campos que são Listas (Arrays) como pré-requisitos
+  const handleChangeArray = (campo, valorTexto) => {
+    // Transforma "OPT031, OPT032" em ["OPT031", "OPT032"]
+    const arrayFormatado = valorTexto.split(',').map(item => item.trim()).filter(Boolean);
+    handleChangeCampo(campo, arrayFormatado);
+  };
+
+  const handleAdicionarMateria = () => {
+    const novaMateria = {
+      id: `NOVA_${Date.now().toString().slice(-4)}`, // ID temporário
+      nome: "Nova Disciplina",
+      periodo: 1,
+      ementa: "",
+      preRequisito: [],
+      prepara: [],
+      requer: [],
+      trilha: "Interdisciplinar",
+      carga: 60,
+      aulasSemanais: 4
+    };
+    setMaterias([novaMateria, ...materias]);
+    setMateriaSelecionadaId(novaMateria.id);
+  };
+
+  const handleExcluirMateria = () => {
+    if(window.confirm(`Tem certeza que deseja excluir ${materiaEditando.nome}?`)) {
+      setMaterias(materias.filter(m => m.id !== materiaSelecionadaId));
+      setMateriaSelecionadaId(null);
+    }
+  };
+
+  // Função que envia as alterações para o GitHub
+  const handleSalvarNoGithub = async () => {
+    if (!token) {
+      setStatus({ tipo: 'erro', texto: "⚠️ Insira o Token do GitHub para salvar." });
+      return;
+    }
+
+    setLoading(true);
+    setStatus({ tipo: 'info', texto: "⏳ Conectando ao GitHub..." });
+
+    try {
+      // 1. Pegar o SHA atual do arquivo
+      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
+        headers: { Authorization: `token ${token}` }
+      });
+      
+      if (!getRes.ok) throw new Error("Acesso negado. Verifique o usuário, repositório ou o Token.");
+      
+      const fileData = await getRes.json();
+      const fileSha = fileData.sha;
+
+      // 2. Converte as matérias atualizadas para JSON com formatação bonita
+      const novoConteudoJson = JSON.stringify(materias, null, 2);
+      
+      // 3. Converte para Base64 (UTF-8 safe)
+      const encodedContent = btoa(unescape(encodeURIComponent(novoConteudoJson)));
+
+      // 4. Envia o PUT (Update)
+      setStatus({ tipo: 'info', texto: "🚀 Enviando atualização..." });
+      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `token ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: "Atualização da grade via Painel Admin Visual",
+          content: encodedContent,
+          sha: fileSha
+        }),
+      });
+
+      if (!putRes.ok) throw new Error("Erro ao sobrescrever o arquivo no GitHub.");
+
+      setStatus({ tipo: 'sucesso', texto: "✅ Sucesso! O site será atualizado automaticamente em ~2 minutos." });
+      
+    } catch (error) {
+      console.error(error);
+      setStatus({ tipo: 'erro', texto: `❌ Erro: ${error.message}` });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-100 flex flex-col font-sans">
+      {/* HEADER DA ADMINISTRAÇÃO */}
+      <div className="bg-indigo-700 text-white p-4 shadow-md flex justify-between items-center z-10">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+            <span>⚙️</span> Painel do Coordenador
+          </h1>
+          <p className="text-indigo-200 text-xs sm:text-sm">Edição visual da Grade Curricular</p>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          <button onClick={() => navigate('/')} className="px-4 py-2 bg-indigo-800 hover:bg-indigo-900 rounded-lg text-sm font-medium transition-colors">
+            Sair
+          </button>
+        </div>
+      </div>
+
+      {/* ÁREA DE CONTROLE (TOKEN E BOTÃO SALVAR) */}
+      <div className="bg-white border-b border-gray-200 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex-1 w-full flex items-center gap-2">
+          <span className="text-xl">🔑</span>
+          <input
+            type="password"
+            placeholder="Cole o Token do GitHub aqui..."
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+          />
+        </div>
+        
+        <button
+          onClick={handleSalvarNoGithub}
+          disabled={loading}
+          className={`w-full sm:w-auto px-8 py-2 rounded-lg font-bold text-white transition-all shadow-md flex items-center justify-center gap-2 ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
+        >
+          {loading ? '⏳ Processando...' : '💾 Publicar Alterações'}
+        </button>
+      </div>
+
+      {/* FEEDBACK DE STATUS */}
+      {status && (
+        <div className={`p-3 text-center text-sm font-medium ${status.tipo === 'erro' ? 'bg-red-100 text-red-700' : status.tipo === 'sucesso' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+          {status.texto}
+        </div>
+      )}
+
+      {/* LAYOUT PRINCIPAL: LISTA NA ESQUERDA, FORMULÁRIO NA DIREITA */}
+      <div className="flex flex-1 overflow-hidden">
+        
+        {/* COLUNA ESQUERDA: LISTA DE MATÉRIAS */}
+        <div className="w-1/3 max-w-sm bg-white border-r border-gray-200 flex flex-col">
+          <div className="p-4 border-b border-gray-200">
+            <button 
+              onClick={handleAdicionarMateria}
+              className="w-full mb-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg font-semibold text-sm transition-colors"
+            >
+              + Adicionar Nova Disciplina
+            </button>
+            <input
+              type="text"
+              placeholder="Buscar disciplina..."
+              className="w-full px-3 py-2 bg-gray-100 border-transparent rounded-lg focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm transition-all"
+              value={termoBusca}
+              onChange={(e) => setTermoBusca(e.target.value)}
+            />
+          </div>
+          <div className="flex-1 overflow-y-auto p-2 space-y-1">
+            {materiasFiltradas.map(m => (
+              <button
+                key={m.id}
+                onClick={() => setMateriaSelecionadaId(m.id)}
+                className={`w-full text-left px-3 py-3 rounded-lg text-sm transition-colors border ${materiaSelecionadaId === m.id ? 'bg-indigo-50 border-indigo-300 shadow-sm' : 'border-transparent hover:bg-gray-50'}`}
+              >
+                <div className="font-semibold text-gray-800 line-clamp-1">{m.nome}</div>
+                <div className="text-xs text-gray-500 flex justify-between mt-1">
+                  <span>{m.id}</span>
+                  <span>{m.periodo}º Período</span>
+                </div>
+              </button>
+            ))}
+            {materiasFiltradas.length === 0 && (
+              <p className="text-center text-gray-400 text-sm mt-4">Nenhuma matéria encontrada.</p>
+            )}
+          </div>
+        </div>
+
+        {/* COLUNA DIREITA: FORMULÁRIO DE EDIÇÃO */}
+        <div className="flex-1 bg-slate-50 overflow-y-auto p-4 sm:p-8">
+          {materiaEditando ? (
+            <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+              <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
+                <h2 className="text-2xl font-bold text-gray-800">Editando Disciplina</h2>
+                <button onClick={handleExcluirMateria} className="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-1 rounded hover:bg-red-50 transition-colors">
+                  🗑️ Excluir Disciplina
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Linha 1 */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Código / ID</label>
+                  <input type="text" value={materiaEditando.id || ""} onChange={(e) => handleChangeCampo('id', e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Nome da Disciplina</label>
+                  <input type="text" value={materiaEditando.nome || ""} onChange={(e) => handleChangeCampo('nome', e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm font-semibold" />
+                </div>
+
+                {/* Linha 2 */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Período (Número)</label>
+                  <input type="number" value={materiaEditando.periodo || ""} onChange={(e) => handleChangeCampo('periodo', parseInt(e.target.value) || 0)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Trilha Principal</label>
+                  <select value={materiaEditando.trilha || ""} onChange={(e) => handleChangeCampo('trilha', e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm">
+                    <option value="Matemática e Física">Matemática e Física</option>
+                    <option value="Computação">Computação</option>
+                    <option value="Eletrônica">Eletrônica</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Biomédica">Biomédica</option>
+                    <option value="Interdisciplinar">Interdisciplinar</option>
+                  </select>
+                </div>
+
+                {/* Linha 3 */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Carga Horária Total</label>
+                  <input type="number" value={materiaEditando.carga || ""} onChange={(e) => handleChangeCampo('carga', parseInt(e.target.value) || 0)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Aulas Semanais</label>
+                  <input type="number" value={materiaEditando.aulasSemanais || ""} onChange={(e) => handleChangeCampo('aulasSemanais', parseInt(e.target.value) || 0)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
+                </div>
+
+                {/* Linha 4 (Ementa Ocupa Tudo) */}
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Ementa</label>
+                  <textarea rows="4" value={materiaEditando.ementa || ""} onChange={(e) => handleChangeCampo('ementa', e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm resize-none"></textarea>
+                </div>
+
+                {/* Linha 5: Relações Ocupam Tudo */}
+                <div className="col-span-1 sm:col-span-2 p-4 bg-blue-50 rounded-lg border border-blue-100 space-y-4">
+                  <h3 className="text-sm font-bold text-blue-800 mb-2">🔗 Relações e Setas do Fluxograma</h3>
+                  <p className="text-xs text-blue-600 mb-4">Separe os códigos das matérias por vírgula (Ex: OPT031, OPT032).</p>
+                  
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Pré-Requisitos Obrigatórios (Setas Sólidas)</label>
+                    <input type="text" value={(materiaEditando.preRequisito || []).join(", ")} onChange={(e) => handleChangeArray('preRequisito', e.target.value)} placeholder="Ex: EEL1001, EEL2002" className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Prepara Para (Matérias Futuras)</label>
+                    <input type="text" value={(materiaEditando.prepara || []).join(", ")} onChange={(e) => handleChangeArray('prepara', e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Requer Conhecimento De (Seta Tracejada)</label>
+                    <input type="text" value={(materiaEditando.requer || []).join(", ")} onChange={(e) => handleChangeArray('requer', e.target.value)} className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500" />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center text-gray-400">
+              <span className="text-5xl mb-4">👈</span>
+              <p className="text-lg font-medium text-gray-500">Selecione uma disciplina na lista para editar</p>
+              <p className="text-sm">Ou adicione uma nova matéria no botão azul.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
 // ROTEAMENTO PRINCIPAL
 // ==========================================
 export default function App() {
@@ -1817,6 +2120,7 @@ export default function App() {
       <Route path="/" element={<TelaInicial />} />
       <Route path="/selecao_materia" element={<SelecaoPeriodoMaterias />} />
       <Route path="/fluxograma" element={<TelaFluxograma />} />
+      <Route path="/admin" element={<TelaAdmin />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

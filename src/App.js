@@ -353,18 +353,32 @@ function TelaInicial() {
                 </motion.button>
               </div>
 
-              {/* Corpo do Site (Iframe) */}
-              <div className="flex-1 w-full bg-white relative">
+              {/* Corpo do Site (Iframe) com "Zoom" (Scale) de 67% */}
+              <div className="flex-1 w-full bg-white relative overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center -z-10 bg-gray-50">
                   <p className="text-gray-400 font-medium animate-pulse">Carregando portal...</p>
                 </div>
                 
-                <iframe
-                  src="https://www.utfpr.edu.br/cursos/coordenacoes/graduacao/campo-mourao/cm-engenharia-eletronica"
-                  title="Site Oficial UTFPR"
-                  className="w-full h-full border-none z-10 relative"
-                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                />
+                {/* O container abaixo cria um "canvas" maior que a tela 
+                  (cerca de 150% do tamanho) e depois encolhe (escala) tudo 
+                  para 67%, fazendo o conteúdo do site parecer menor, 
+                  exibindo muito mais informação sem barra de rolagem horizontal.
+                */}
+                <div 
+                  style={{
+                    width: '150%',        // Compensa a redução
+                    height: '150%',       // Compensa a redução
+                    transform: 'scale(0.67)', // O "zoom out" equivalente a 67%
+                    transformOrigin: 'top left' // Ponto de partida da redução
+                  }}
+                >
+                  <iframe
+                    src="https://www.utfpr.edu.br/cursos/coordenacoes/graduacao/campo-mourao/cm-engenharia-eletronica"
+                    title="Site Oficial UTFPR"
+                    className="w-full h-full border-none z-10 relative"
+                    sandbox="allow-same-origin allow-scripts allow-forms"
+                  />
+                </div>
               </div>
             </motion.div>
           </motion.div>

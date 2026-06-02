@@ -2,7 +2,7 @@
   {
     "id": "EEL1001",
     "nome": "Fundamentos da Engenharia Eletrônica",
-    "periodo": 2,
+    "periodo": 1,
     "ementa": "A disciplina Fundamentos de Engenharia Eletrônica é destinada a discentes cursando a partir do 1º Período e introduz temas básicos em engenharia e eletrônica. Nela os discentes aprendem sobre métodos científicos na Engenharia, materiais elétricos, medidas elétricas e instrumentação, assim como padrões metrológicos, métodos estatísticos aplicados às medições, e por fim apresenta a legislação vigente que regula a atuação do Engenheiro Eletrônico. Ao final da disciplina, o discente será capaz de conhecer e trabalhar com diferentes materiais elétricos e instrumentos de medidas fazendo o tratamento de dados obtidos através destes.",
     "preRequisito": null,
     "prepara": [],

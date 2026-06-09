@@ -2,6 +2,7 @@
   {
     "id": "EEL1001",
     "nome": "Fundamentos da Engenharia Eletrônica",
+    "curso": "Engenharia Eletrônica",
     "periodo": 1,
     "ementa": "A disciplina Fundamentos de Engenharia Eletrônica é destinada a discentes cursando a partir do 1º Período e introduz temas básicos em engenharia e eletrônica. Nela os discentes aprendem sobre métodos científicos na Engenharia, materiais elétricos, medidas elétricas e instrumentação, assim como padrões metrológicos, métodos estatísticos aplicados às medições, e por fim apresenta a legislação vigente que regula a atuação do Engenheiro Eletrônico. Ao final da disciplina, o discente será capaz de conhecer e trabalhar com diferentes materiais elétricos e instrumentos de medidas fazendo o tratamento de dados obtidos através destes.",
     "preRequisito": null,
@@ -14,6 +15,7 @@
   {
     "id": "EEL1002",
     "nome": "Introdução a Algoritmos e Programação",
+    "curso": "Engenharia Eletrônica",
     "periodo": 1,
     "ementa": "Disciplina introdutória de programação focada em algoritmos e implementação de hardware.",
     "preRequisito": null,
@@ -29,6 +31,7 @@
   {
     "id": "EEL1003",
     "nome": "Introdução a Projetos",
+    "curso": "Engenharia Eletrônica",
     "periodo": 1,
     "ementa": "Introdução a Projetos apresenta, ao aluno, o engenheiro como um Gerente de Projetos, dando ênfase às principais etapas de gestão de um projeto e a comunicação eficiente. Esta comunicação é desenvolvida em três grandes eixos, comunicação escrita, oral e gráfica; esta última apresenta noções de desenho universal e enfatiza o desenho técnico e o desenho industrial de placas de circuitos eletrônicos.",
     "preRequisito": null,
@@ -43,6 +46,7 @@
   {
     "id": "EEL1004",
     "nome": "Desafio Interdisciplinar",
+    "curso": "Engenharia Eletrônica",
     "periodo": 1,
     "ementa": "Disciplina que ambienta o estudante em integração de conhecimentos, articulando as habilidades e competências desenvolvidas a partir do Primeiro Período por meio de um projeto prático norteado por um contexto em Engenharia.",
     "preRequisito": null,
@@ -55,6 +59,7 @@
   {
     "id": "NCM008",
     "nome": "Geometria Analítica",
+    "curso": "Engenharia Eletrônica",
     "periodo": 1,
     "ementa": "Geometria Analítica, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, trata do estudo analítico de vetores e objetos geométricos. Nela, os estudantes aprendem a descrever vetores, retas, planos, cônicas e quádricas de forma algébrica e geométrica. Ao final da disciplina, os estudantes são capazes de representar objetos geométricos de forma algébrica, bem como resolver problemas de engenharia utilizando conceitos e propriedades de álgebra vetorial.",
     "preRequisito": null,
@@ -69,6 +74,7 @@
   {
     "id": "NCM010",
     "nome": "Pré-Cálculo",
+    "curso": "Engenharia Eletrônica",
     "periodo": 1,
     "ementa": "Pré-Cálculo, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, aborda fundamentos básicos da matemática em problemas estruturados envolvendo contexto de engenharia. Nela, os estudantes aprendem a interpretar e delimitar problemas, descritos por números reais, expressões algébricas, equações e inequações, identificando as variáveis e as condições de contorno. Ao final da disciplina, é capaz de resolver problemas descritos por funções de uma variável real, elaborando hipóteses plausíveis aos problemas delimitados.",
     "preRequisito": null,
@@ -84,6 +90,7 @@
   {
     "id": "NCM012",
     "nome": "Física 1",
+    "curso": "Engenharia Eletrônica",
     "periodo": 1,
     "ementa": "Física 1, ofertada aos estudantes do 1º período do curso de Engenharia Eletrônica, aborda conceitos e aplicações das leis fundamentais da mecânica no contexto das engenharias. Nela, os estudantes aprendem os diferentes tipos de movimento e suas leis de conservação. Ao final da disciplina, é capaz de interpretar, delimitar, elaborar hipóteses plausíveis, bem como resolver problemas estruturados envolvendo os diferentes tipos de movimento e suas leis de conservação, relacionando-os com medidas experimentais no contexto das engenharias, com autonomia, dedicação e integridade.",
     "preRequisito": null,
@@ -98,6 +105,7 @@
   {
     "id": "EEL2001",
     "nome": "Tópicos em Química",
+    "curso": "Engenharia Eletrônica",
     "periodo": 2,
     "ementa": "Disciplina introdutória aos conceitos fundamentais de química aplicada à engenharia.",
     "preRequisito": null,
@@ -110,6 +118,7 @@
   {
     "id": "EEL2002",
     "nome": "Programação Estruturada",
+    "curso": "Engenharia Eletrônica",
     "periodo": 2,
     "ementa": "Disciplina que aprofunda os conceitos de programação estruturada e desenvolvimento de algoritmos.",
     "preRequisito": "EEL1002",
@@ -126,6 +135,7 @@
   {
     "id": "EEL2003",
     "nome": "Circuitos Digitais Combinacionais",
+    "curso": "Engenharia Eletrônica",
     "periodo": 2,
     "ementa": "Disciplina que aborda os fundamentos de circuitos digitais combinacionais.",
     "preRequisito": "EEL1002",
@@ -142,6 +152,7 @@
   {
     "id": "NCM002",
     "nome": "Álgebra Linear",
+    "curso": "Engenharia Eletrônica",
     "periodo": 2,
     "ementa": "Álgebra Linear, ofertada aos estudantes do 2º período do curso de Engenharia Eletrônica, trata dos fundamentos da Álgebra Linear. Nela, os estudantes aprendem sobre matrizes, sistemas de equações lineares, espaços vetoriais, transformações lineares e autovalores e autovetores. Ao final da disciplina, os estudantes são capazes de avaliar a dependência e independência linear entre elementos de um espaço vetorial, obter e analisar dilatações, contrações, reflexões, cisalhamentos e projeções de objetos bidimensionais e tridimensionais.",
     "preRequisito": null,
@@ -154,6 +165,7 @@
   {
     "id": "NCM004",
     "nome": "Cálculo Diferencial e Integral 1",
+    "curso": "Engenharia Eletrônica",
     "periodo": 2,
     "ementa": "Cálculo Diferencial e Integral 1, ofertada aos estudantes do 2º período do curso de Engenharia Eletrônica, aborda aplicações de limites, derivadas e integrais de funções reais de uma variável real, em contextos das engenharias. Nela, os estudantes aprendem a interpretar e delimitar problemas, descritos por limites, derivadas e integrais, identificando as variáveis e as condições de contorno. Ao final da disciplina, é capaz de resolver problemas estruturados em diversos contextos da engenharia, analisando comportamentos e taxas de variação de funções, conforme variáveis, condições de contorno e hipóteses elaboradas, com autorregulação.",
     "preRequisito": [
@@ -173,6 +185,7 @@
   {
     "id": "NCM013",
     "nome": "Física 2",
+    "curso": "Engenharia Eletrônica",
     "periodo": 2,
     "ementa": "Disciplina que aborda conceitos de eletricidade, magnetismo e ondas.",
     "preRequisito": "NCM010",
@@ -189,6 +202,7 @@
   {
     "id": "EEL3001",
     "nome": "Estrutura de Dados",
+    "curso": "Engenharia Eletrônica",
     "periodo": 3,
     "ementa": "Disciplina que estuda as principais estruturas de dados e algoritmos de manipulação.",
     "preRequisito": "EEL2002",
@@ -203,6 +217,7 @@
   {
     "id": "EEL3002",
     "nome": "Circuitos Digitais Sequenciais",
+    "curso": "Engenharia Eletrônica",
     "periodo": 3,
     "ementa": "Disciplina que aborda circuitos digitais sequenciais e sistemas de memória.",
     "preRequisito": "EEL2003",
@@ -217,6 +232,7 @@
   {
     "id": "EEL3003",
     "nome": "Análise de Circuitos Elétricos 1",
+    "curso": "Engenharia Eletrônica",
     "periodo": 3,
     "ementa": "A disciplina de Análise de Circuitos Elétricos 1 é destinada a discentes a partir do 3º período e aborda as principais técnicas de análise de circuitos de corrente contínua.",
     "preRequisito": null,
@@ -231,6 +247,7 @@
   {
     "id": "EEL3004",
     "nome": "Dispositivos Eletrônicos",
+    "curso": "Engenharia Eletrônica",
     "periodo": 3,
     "ementa": "Disciplina que aborda os fundamentos dos dispositivos eletrônicos e semicondutores.",
     "preRequisito": null,
@@ -246,6 +263,7 @@
   {
     "id": "NCM005",
     "nome": "Cálculo Diferencial e Integral 2",
+    "curso": "Engenharia Eletrônica",
     "periodo": 3,
     "ementa": "Continuação do Cálculo Diferencial e Integral 1, abordando técnicas avançadas de integração e aplicações.",
     "preRequisito": "NCM004",
@@ -262,6 +280,7 @@
   {
     "id": "NCM014",
     "nome": "Física 3",
+    "curso": "Engenharia Eletrônica",
     "periodo": 3,
     "ementa": "Continuação de Física 2, abordando temas avançados de física.",
     "preRequisito": "NCM004",
@@ -276,6 +295,7 @@
   {
     "id": "EEL4001",
     "nome": "Fundamentos de Mecânica dos Corpos Rígidos",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "Disciplina que aborda os fundamentos da mecânica dos corpos rígidos.",
     "preRequisito": [
@@ -294,6 +314,7 @@
   {
     "id": "EEL4002",
     "nome": "Fundamentos de Fenômenos de Transporte",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "Disciplina que aborda os fundamentos dos fenômenos de transporte.",
     "preRequisito": [
@@ -310,6 +331,7 @@
   {
     "id": "EEL4003",
     "nome": "Microcontroladores 1",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "Disciplina introdutória sobre microcontroladores e sistemas embarcados.",
     "preRequisito": null,
@@ -324,6 +346,7 @@
   {
     "id": "EEL4004",
     "nome": "Introdução a Redes de Computadores",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "Disciplina que aborda os fundamentos de redes de computadores.",
     "preRequisito": null,
@@ -336,6 +359,7 @@
   {
     "id": "EEL4005",
     "nome": "Análise de Circuitos Elétricos 2",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "A disciplina de Análise de Circuitos Elétricos 2, é destinada a discentes a partir do 4º período e aborda técnicas de análise de circuitos de corrente alternada.",
     "preRequisito": "EEL3003",
@@ -353,6 +377,7 @@
   {
     "id": "EEL4006",
     "nome": "Circuitos Eletrônicos",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "Disciplina que aborda a análise e projeto de circuitos eletrônicos.",
     "preRequisito": "EEL3004",
@@ -370,6 +395,7 @@
   {
     "id": "EEL4007",
     "nome": "Dispositivos Eletrônicos de Potência",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "Disciplina que aborda dispositivos eletrônicos aplicados em sistemas de potência.",
     "preRequisito": "EEL3004",
@@ -386,6 +412,7 @@
   {
     "id": "NCM006",
     "nome": "Cálculo Diferencial e Integral 3",
+    "curso": "Engenharia Eletrônica",
     "periodo": 4,
     "ementa": "Continuação do Cálculo Diferencial e Integral 2, abordando funções de múltiplas variáveis e aplicações avançadas.",
     "preRequisito": [
@@ -406,6 +433,7 @@
   {
     "id": "EEL5001",
     "nome": "Microcontroladores 2",
+    "curso": "Engenharia Eletrônica",
     "periodo": 5,
     "ementa": "Continuação de Microcontroladores 1, abordando tópicos avançados de sistemas embarcados.",
     "preRequisito": "EEL4003",
@@ -420,6 +448,7 @@
   {
     "id": "EEL5002",
     "nome": "Eletromagnetismo",
+    "curso": "Engenharia Eletrônica",
     "periodo": 5,
     "ementa": "Disciplina que aborda os fundamentos do eletromagnetismo e suas aplicações.",
     "preRequisito": [
@@ -436,6 +465,7 @@
   {
     "id": "EEL5003",
     "nome": "Amplificadores",
+    "curso": "Engenharia Eletrônica",
     "periodo": 5,
     "ementa": "A disciplina de Amplificadores é destinada a discentes a partir do 5º período e aborda aspectos de amplificação de sinais.",
     "preRequisito": "EEL4006",
@@ -450,6 +480,7 @@
   {
     "id": "EEL5004",
     "nome": "Filtragem Analógica",
+    "curso": "Engenharia Eletrônica",
     "periodo": 5,
     "ementa": "Disciplina que aborda o projeto e análise de filtros analógicos.",
     "preRequisito": "EEL4005",
@@ -464,6 +495,7 @@
   {
     "id": "EEL5005",
     "nome": "Sensores e Atuadores",
+    "curso": "Engenharia Eletrônica",
     "periodo": 5,
     "ementa": "Disciplina que aborda sensores e atuadores em sistemas eletrônicos.",
     "preRequisito": "EEL4006",
@@ -478,6 +510,7 @@
   {
     "id": "EEL5006",
     "nome": "Modelagem de Sistemas Físicos",
+    "curso": "Engenharia Eletrônica",
     "periodo": 5,
     "ementa": "Disciplina que aborda a modelagem matemática de sistemas físicos.",
     "preRequisito": "EEL4005",
@@ -495,6 +528,7 @@
   {
     "id": "EEL6001",
     "nome": "Programação Orientada a Objetos",
+    "curso": "Engenharia Eletrônica",
     "periodo": 6,
     "ementa": "Disciplina que aborda os conceitos de programação orientada a objetos.",
     "preRequisito": null,
@@ -509,6 +543,7 @@
   {
     "id": "EEL6002",
     "nome": "Processamento Digital de Sinais 1",
+    "curso": "Engenharia Eletrônica",
     "periodo": 6,
     "ementa": "Disciplina que aborda os fundamentos do processamento digital de sinais.",
     "preRequisito": null,
@@ -521,6 +556,7 @@
   {
     "id": "EEL6003",
     "nome": "Eletrônica de Potência",
+    "curso": "Engenharia Eletrônica",
     "periodo": 6,
     "ementa": "Disciplina que aborda sistemas de eletrônica de potência e conversores.",
     "preRequisito": [
@@ -539,6 +575,7 @@
   {
     "id": "EEL6004",
     "nome": "Máquinas Elétricas",
+    "curso": "Engenharia Eletrônica",
     "periodo": 6,
     "ementa": "Disciplina que aborda os fundamentos das máquinas elétricas.",
     "preRequisito": null,
@@ -551,6 +588,7 @@
   {
     "id": "EEL6005",
     "nome": "Fundamentos de Controle Clássico",
+    "curso": "Engenharia Eletrônica",
     "periodo": 6,
     "ementa": "Disciplina que aborda os fundamentos do controle clássico de sistemas.",
     "preRequisito": [
@@ -570,6 +608,7 @@
   {
     "id": "EEL6006",
     "nome": "Projetos Eletrônicos 1",
+    "curso": "Engenharia Eletrônica",
     "periodo": 6,
     "ementa": "Primeira disciplina da sequência de projetos, integrando conhecimentos técnicos.",
     "preRequisito": "EEL5006",
@@ -586,6 +625,7 @@
   {
     "id": "EEL7001",
     "nome": "Técnicas de Controle Digital",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "Disciplina que aborda técnicas avançadas de controle digital de sistemas.",
     "preRequisito": "EEL6005",
@@ -600,6 +640,7 @@
   {
     "id": "EEL7002",
     "nome": "Sistemas Supervisórios",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "A disciplina de Sistemas Supervisórios é destinada a discentes a partir do 7º período e aborda aspectos de soluções aplicadas na área. Nela o aluno aprende a desenvolver soluções em redes industriais, aplicar acionamentos eletrônicos e projetar sistemas supervisórios. Ao final da disciplina é capaz de projetar solução em sistemas supervisórios, e considerar as etapas de teste, verificação, validação, certificação e operação. ",
     "preRequisito": [
@@ -616,6 +657,7 @@
   {
     "id": "NCM018",
     "nome": "Empreendedorismo",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "Disciplina que aborda fundamentos de empreendedorismo e inovação.",
     "preRequisito": null,
@@ -628,6 +670,7 @@
   {
     "id": "OPT028",
     "nome": "Sistemas Reconfiguráveis",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "A disciplina de Sistemas Reconfiguráveis é destinada a discentes a partir do 7º período e aborda aspectos gerais de modelagem e simulação. Nela o aluno aprende a desenvolver máquinas de estado através de projetos e simulações. Ao final da disciplina é capaz de criar sistemas reconfiguráveis projetando máquinas de estado, além de trabalhar em equipe.",
     "preRequisito": null,
@@ -642,6 +685,7 @@
   {
     "id": "OPT029",
     "nome": "Instrumentação Industrial",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "A disciplina de Instrumentação Industrial é destinada a discentes a partir do 7º período e aborda aspectos de instrumentação e redes industriais. Nela o aluno aprende a avaliar rede industrial e instrumentação industrial, bem como indicar os sensores e atuadores para a aplicação.  Ao final da disciplina é capaz de analisar a integração hardware/software para a aplicação, e analisar testes de verificação, validação e certificação de redes e instrumentos industriais. ",
     "preRequisito": null,
@@ -657,6 +701,7 @@
   {
     "id": "OPT030",
     "nome": "Fontes Chaveadas e Inverores",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "A disciplina de Fontes Chaveadas e Inversores é destinada a discentes a partir do 7º período e aborda aspectos gerais de modulação, modelagem e projeto. Nela o aluno aprende a projetar fontes chaveadas e inversores.  Ao final da disciplina é capaz de criar solução em fontes chaveadas e inversores, trabalhar em equipe e realizar testes, verificação, validação e certificação dos equipamentos pertinentes.",
     "preRequisito": [
@@ -674,6 +719,7 @@
   {
     "id": "OPT031",
     "nome": "Engenharia Clínica",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "Gestão e manutenção de equipamentos hospitalares, normas e padrões (ANVISA, NBR/IEC), infraestrutura hospitalar (gases medicinais, sistemas de esterilização, segurança), organização do setor de engenharia clínica e gestão de parque tecnológico.",
     "preRequisito": null,
@@ -689,6 +735,7 @@
   {
     "id": "OPT032",
     "nome": "Instrumentação Médica",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "Projeto de instrumentação aplicada à eletrofisiologia; uso de sensores e atuadores biomédicos; aquisição e análise de sinais biomédicos; integração hardware/software; testes, validação e certificação de dispositivos.",
     "preRequisito": null,
@@ -707,6 +754,7 @@
   {
     "id": "OPT093",
     "nome": "Sistemas Embarcados 1",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "A disciplina de Sistemas Embarcados 1 é destinada a discentes a partir do 7º período e aborda aspectos de sistemas operacionais e princípios de sistemas embarcados. Nela o aluno aprende a analisar sistemas operacionais aplicados à sistemas embarcados, bem como a sincronização, concorrência e comunicação de processos, além de aprender a sincronização hardware/software para estes sistemas. Ao final da disciplina é capaz de integrar hardware e software, além de testar, validar, verificar e certificar o processo desenvolvido. ",
     "preRequisito": [
@@ -725,6 +773,7 @@
   {
     "id": "OPT000",
     "nome": "Trilha",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "Disciplina da trilha de aprofundamento escolhida pelo aluno no 7º período. As trilhas disponíveis são: Engenharia de Computação, Engenharia Industrial e Engenharia Biomédica.",
     "preRequisito": null,
@@ -737,6 +786,7 @@
   {
     "id": "EEL7005",
     "nome": "Optativa de Extensão",
+    "curso": "Engenharia Eletrônica",
     "periodo": 7,
     "ementa": "Disciplina optativa de extensão que integra conhecimentos técnicos com atividades extensionistas.",
     "preRequisito": null,
@@ -749,6 +799,7 @@
   {
     "id": "EEL8001",
     "nome": "Telecomunicações",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "Disciplina que aborda os fundamentos de telecomunicações e sistemas de comunicação.",
     "preRequisito": null,
@@ -761,6 +812,7 @@
   {
     "id": "EEL8002",
     "nome": "Projeto de Circuitos Integrados",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "Disciplina que aborda o projeto e desenvolvimento de circuitos integrados.",
     "preRequisito": null,
@@ -773,6 +825,7 @@
   {
     "id": "OPT033",
     "nome": "Processamento Digital de Sinais 2",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "A disciplina de Processamento Digital de Sinais 2 é destinada a discentes a partir do 8º período e aborda aspectos gerais de Inteligência Artificial. Nela o aluno aprende a avaliar aplicação de IA em PDS, Redes Neurais Artificiais e Reconhecimento de Padrões.  Ao final da disciplina é capaz de testar, verificar, validar e certificar soluções apresentadas para problemas de contexto real. ",
     "preRequisito": null,
@@ -785,6 +838,7 @@
   {
     "id": "OPT034",
     "nome": "Sistemas Embarcados 2",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "A disciplina de Sistemas Embarcados 2 é destinada a discentes a partir do 8º período e aborda aspectos gerias de sistemas embarcados em tempo real. Nela o aluno aprende a produzir sistemas embarcados para execução em tempo real. Ao final da disciplina é capaz de projetar e operar solução para estes sistemas. ",
     "preRequisito": [
@@ -800,6 +854,7 @@
   {
     "id": "OPT035",
     "nome": "Smart Grids",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "A disciplina de Smart Grids é destinada a discentes a partir do 8º período e aborda aspectos gerais de redes inteligentes e seus componentes. Nela o aluno aprende a avaliar fontes alternativas, redes elétricas inteligentes, microrredes e cenários: nacional e internacional.  Ao final da disciplina é capaz de analisar solução em smart grids, e considerar o contexto externo, social e ambiental envolvido.",
     "preRequisito": [
@@ -815,6 +870,7 @@
   {
     "id": "OPT036",
     "nome": "Controle Inteligente",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "A disciplina de Controle Inteligente é destinada a discentes a partir do 8º período e aborda aspectos de sistemas inteligentes. Nela o aluno aprende a avaliar sistemas inteligentes, bem como analisar a lógica Fuzzy em controle de sistemas. Ao final da disciplina é capaz de realizar análise com incerteza, implementar software pertinente ao sistema, além de testar, validar, verificar e certificar o processo desenvolvido. ",
     "preRequisito": [
@@ -830,6 +886,7 @@
   {
     "id": "OPT037",
     "nome": "Imagens Médicas",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "Métodos de imagem (Raio-X, TC, RM, cintilografia, ultrassom); processamento digital de imagens; reconstrução de imagens médicas; conceitos de DICOM e PACS; avaliação de qualidade e interpretação.",
     "preRequisito": [
@@ -847,6 +904,7 @@
   {
     "id": "OPT38",
     "nome": "Tecnologias Assistivas",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "Projeto de soluções assistivas (ex.: dispositivos de audiologia), normas técnicas, processo de projeto, teste, verificação, validação e certificação.",
     "preRequisito": [
@@ -862,6 +920,7 @@
   {
     "id": "OPT001",
     "nome": "Trilha",
+    "curso": "Engenharia Eletrônica",
     "periodo": 8,
     "ementa": "Continuação da trilha de aprofundamento escolhida no 7º período.",
     "preRequisito": null,
@@ -874,6 +933,7 @@
   {
     "id": "EEL8003",
     "nome": "Projetos Eletrônicos 2",
+    "curso": "Engenharia Eletrônica",
     "periodo": 9,
     "ementa": "Segunda disciplina da sequência de projects, com maior complexidade técnica.",
     "preRequisito": "EEL6006",
@@ -890,6 +950,7 @@
   {
     "id": "EEL9001",
     "nome": "Engenharia de Sistemas Eletrônicos",
+    "curso": "Engenharia Eletrônica",
     "periodo": 9,
     "ementa": "Disciplina que integra conhecimentos de sistemas eletrônicos complexos.",
     "preRequisito": null,
@@ -902,6 +963,7 @@
   {
     "id": "EEL9002",
     "nome": "Sustentabilidade Ambiental",
+    "curso": "Engenharia Eletrônica",
     "periodo": 9,
     "ementa": "Disciplina que aborda questões de sustentabilidade ambiental em projetos de engenharia.",
     "preRequisito": null,
@@ -914,6 +976,7 @@
   {
     "id": "EEL9004",
     "nome": "Trabalho de Conclusão de Curso",
+    "curso": "Engenharia Eletrônica",
     "periodo": 9,
     "ementa": "Regulamentado pela norma complementar de TCC do curso de Engenharia Eletrônica.",
     "preRequisito": null,
@@ -926,6 +989,7 @@
   {
     "id": "OPT002",
     "nome": "Optativa Colégio de Humanidades",
+    "curso": "Engenharia Eletrônica",
     "periodo": 9,
     "ementa": "Disciplina optativa do Colégio de Humanidades, com temas de formação humanística.",
     "preRequisito": null,
@@ -938,6 +1002,7 @@
   {
     "id": "EEL9003",
     "nome": "Projetos Eletrônicos 3",
+    "curso": "Engenharia Eletrônica",
     "periodo": 10,
     "ementa": "Terceira e última disciplina da sequência de projetos, com complexidade máxima e integração completa dos conhecimentos do curso.",
     "preRequisito": "EEL8003",
@@ -952,6 +1017,7 @@
   {
     "id": "EEL7003",
     "nome": "Estágio Curricular Obrigatório",
+    "curso": "Engenharia Eletrônica",
     "periodo": 10,
     "ementa": "O Discente poderá ter uma jornada de até 6 horas diárias e 30 horas semanais de acordo com a Lei de Estágio.",
     "preRequisito": null,
@@ -964,6 +1030,7 @@
   {
     "id": "EEL2004",
     "nome": "Atividades Complementares",
+    "curso": "Engenharia Eletrônica",
     "periodo": 10,
     "ementa": "Regulamentado pela norma complementar de Atividades Complementares do curso de Engenharia Eletrônica.",
     "preRequisito": null,

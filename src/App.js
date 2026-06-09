@@ -1811,6 +1811,14 @@ function PERIODOSText(id) {
 // ==========================================
 // COMPONENTE EXTRA: TELA DE ADMINISTRAÇÃO (VISUAL E AMIGÁVEL)
 // ==========================================
+
+// Função auxiliar movida para fora/topo para evitar problemas de dependência
+const formatArrayToString = (valor) => {
+  if (!valor) return "";
+  if (Array.isArray(valor)) return valor.join(", ");
+  return String(valor);
+};
+
 function TelaAdmin() {
   const navigate = useNavigate();
   
@@ -1828,6 +1836,7 @@ function TelaAdmin() {
   const [materias, setMaterias] = useState(() => JSON.parse(JSON.stringify(materiasData)));
   const [materiaSelecionadaId, setMateriaSelecionadaId] = useState(null);
   const [termoBusca, setTermoBusca] = useState("");
+  const [cursoFiltro, setCursoFiltro] = useState("Todos");
   
   const [token, setToken] = useState("");
   const [status, setStatus] = useState(null);
@@ -1837,7 +1846,24 @@ function TelaAdmin() {
   const GITHUB_REPO = "seletor-materias-utfpr";
   const GITHUB_FILE_PATH = "src/data/materias.json";
 
-  // Função para validar o Login
+  // ==========================================
+  // HOOKS (Sempre antes de qualquer return!)
+  // ==========================================
+  
+  // Identifica todos os cursos únicos existentes no JSON para popular o select de filtro
+  const cursosDisponiveis = useMemo(() => {
+    const cursosSet = new Set();
+    materias.forEach(m => {
+      const cursosMat = formatArrayToString(m.curso).split(',').map(c => c.trim()).filter(Boolean);
+      cursosMat.forEach(c => cursosSet.add(c));
+    });
+    return Array.from(cursosSet).sort();
+  }, [materias]);
+
+  // ==========================================
+  // FUNÇÕES
+  // ==========================================
+
   const handleLogin = (e) => {
     e.preventDefault();
     if (loginUser === "daeln" && loginPass === "1234") {
@@ -1848,11 +1874,101 @@ function TelaAdmin() {
     }
   };
 
-  // Se NÃO estiver autenticado, mostra a tela de Login
+  const handleChangeCampo = (campo, valor) => {
+    setMaterias(prev => prev.map(m => {
+      if (m.id === materiaSelecionadaId) {
+        return { ...m, [campo]: valor };
+      }
+      return m;
+    }));
+  };
+
+  const handleChangeArray = (campo, valorTexto) => {
+    const arrayFormatado = valorTexto.split(',').map(item => item.trim()).filter(Boolean);
+    handleChangeCampo(campo, arrayFormatado);
+  };
+
+  const handleAdicionarMateria = () => {
+    const novaMateria = {
+      id: `NOVA_${Date.now().toString().slice(-4)}`,
+      nome: "Nova Disciplina",
+      curso: "Engenharia Eletrônica",
+      periodo: 1,
+      ementa: "",
+      preRequisito: [],
+      prepara: [],
+      requer: [],
+      trilha: "Interdisciplinar",
+      carga: 60,
+      aulasSemanais: 4
+    };
+    setMaterias([novaMateria, ...materias]);
+    setMateriaSelecionadaId(novaMateria.id);
+  };
+
+  const handleExcluirMateria = () => {
+    if(window.confirm(`Tem certeza que deseja excluir esta disciplina?`)) {
+      setMaterias(materias.filter(m => m.id !== materiaSelecionadaId));
+      setMateriaSelecionadaId(null);
+    }
+  };
+
+  const handleSalvarNoGithub = async () => {
+    if (!token) {
+      setStatus({ tipo: 'erro', texto: "⚠️ Insira o Token do GitHub para salvar." });
+      return;
+    }
+
+    setLoading(true);
+    setStatus({ tipo: 'info', texto: "⏳ Conectando ao GitHub..." });
+
+    try {
+      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
+        headers: { Authorization: `token ${token}` }
+      });
+      
+      if (!getRes.ok) throw new Error("Acesso negado. Verifique o usuário, repositório ou o Token.");
+      
+      const fileData = await getRes.json();
+      const fileSha = fileData.sha;
+
+      const novoConteudoJson = JSON.stringify(materias, null, 2);
+      
+      const bytes = new TextEncoder().encode(novoConteudoJson);
+      const encodedContent = btoa(String.fromCharCode(...bytes));
+
+      setStatus({ tipo: 'info', texto: "🚀 Enviando atualização..." });
+      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `token ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: "Atualização da grade via Painel Admin Visual",
+          content: encodedContent,
+          sha: fileSha
+        }),
+      });
+
+      if (!putRes.ok) throw new Error("Erro ao sobrescrever o arquivo no GitHub.");
+
+      setStatus({ tipo: 'sucesso', texto: "✅ Sucesso! O site será atualizado automaticamente em ~2 minutos." });
+      
+    } catch (error) {
+      console.error(error);
+      setStatus({ tipo: 'erro', texto: `❌ Erro: ${error.message}` });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ==========================================
+  // TELA DE LOGIN (Retorno Antecipado / Early Return)
+  // ==========================================
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
-        {/* Efeito de fundo bonitinho */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-purple-900 opacity-50"></div>
         
         <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative z-10">
@@ -1911,114 +2027,25 @@ function TelaAdmin() {
   }
 
   // ==========================================
-  // CÓDIGO DO PAINEL (Só renderiza se passar do login)
+  // CÓDIGO DO PAINEL ADMIN (Se logado)
   // ==========================================
-  
   const materiaEditando = materias.find(m => m.id === materiaSelecionadaId) || null;
 
-  const materiasFiltradas = materias.filter(m => 
-    (m.nome || "").toLowerCase().includes(termoBusca.toLowerCase()) || 
-    (m.id || "").toLowerCase().includes(termoBusca.toLowerCase())
-  );
-
-  const handleChangeCampo = (campo, valor) => {
-    setMaterias(prev => prev.map(m => {
-      if (m.id === materiaSelecionadaId) {
-        return { ...m, [campo]: valor };
-      }
-      return m;
-    }));
-  };
-
-  const handleChangeArray = (campo, valorTexto) => {
-    const arrayFormatado = valorTexto.split(',').map(item => item.trim()).filter(Boolean);
-    handleChangeCampo(campo, arrayFormatado);
-  };
-
-  const formatArrayToString = (valor) => {
-    if (!valor) return "";
-    if (Array.isArray(valor)) return valor.join(", ");
-    return String(valor); // Se for um texto simples, apenas retorna ele
-  };
-
-  const handleAdicionarMateria = () => {
-    const novaMateria = {
-      id: `NOVA_${Date.now().toString().slice(-4)}`,
-      nome: "Nova Disciplina",
-      periodo: 1,
-      ementa: "",
-      preRequisito: [],
-      prepara: [],
-      requer: [],
-      trilha: "Interdisciplinar",
-      carga: 60,
-      aulasSemanais: 4
-    };
-    setMaterias([novaMateria, ...materias]);
-    setMateriaSelecionadaId(novaMateria.id);
-  };
-
-  const handleExcluirMateria = () => {
-    if(window.confirm(`Tem certeza que deseja excluir ${materiaEditando.nome}?`)) {
-      setMaterias(materias.filter(m => m.id !== materiaSelecionadaId));
-      setMateriaSelecionadaId(null);
-    }
-  };
-
-  const handleSalvarNoGithub = async () => {
-    if (!token) {
-      setStatus({ tipo: 'erro', texto: "⚠️ Insira o Token do GitHub para salvar." });
-      return;
+  const materiasFiltradas = materias.filter(m => {
+    const matchBusca = (m.nome || "").toLowerCase().includes(termoBusca.toLowerCase()) || 
+                       (m.id || "").toLowerCase().includes(termoBusca.toLowerCase());
+    
+    let matchCurso = true;
+    if (cursoFiltro !== "Todos") {
+      const cursoStr = formatArrayToString(m.curso).toLowerCase();
+      matchCurso = cursoStr.includes(cursoFiltro.toLowerCase());
     }
 
-    setLoading(true);
-    setStatus({ tipo: 'info', texto: "⏳ Conectando ao GitHub..." });
-
-    try {
-      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
-        headers: { Authorization: `token ${token}` }
-      });
-      
-      if (!getRes.ok) throw new Error("Acesso negado. Verifique o usuário, repositório ou o Token.");
-      
-      const fileData = await getRes.json();
-      const fileSha = fileData.sha;
-
-      const novoConteudoJson = JSON.stringify(materias, null, 2);
-      
-      // Converte para base64 com suporte a acentos (UTF-8)
-      const bytes = new TextEncoder().encode(novoConteudoJson);
-      const encodedContent = btoa(String.fromCharCode(...bytes));
-
-      setStatus({ tipo: 'info', texto: "🚀 Enviando atualização..." });
-      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `token ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: "Atualização da grade via Painel Admin Visual",
-          content: encodedContent,
-          sha: fileSha
-        }),
-      });
-
-      if (!putRes.ok) throw new Error("Erro ao sobrescrever o arquivo no GitHub.");
-
-      setStatus({ tipo: 'sucesso', texto: "✅ Sucesso! O site será atualizado automaticamente em ~2 minutos." });
-      
-    } catch (error) {
-      console.error(error);
-      setStatus({ tipo: 'erro', texto: `❌ Erro: ${error.message}` });
-    } finally {
-      setLoading(false);
-    }
-  };
+    return matchBusca && matchCurso;
+  });
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans">
-      {/* HEADER DA ADMINISTRAÇÃO */}
       <div className="bg-indigo-700 text-white p-4 shadow-md flex justify-between items-center z-10">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
@@ -2028,7 +2055,6 @@ function TelaAdmin() {
         </div>
         
         <div className="flex items-center gap-4">
-          {/* Botão de Logout */}
           <button 
             onClick={() => setIsAuthenticated(false)} 
             className="px-4 py-2 bg-indigo-800 hover:bg-red-600 rounded-lg text-sm font-medium transition-colors"
@@ -2038,7 +2064,6 @@ function TelaAdmin() {
         </div>
       </div>
 
-      {/* ÁREA DE CONTROLE (TOKEN E BOTÃO SALVAR) */}
       <div className="bg-white border-b border-gray-200 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex-1 w-full flex items-center gap-2">
           <span className="text-xl">🔑</span>
@@ -2060,33 +2085,50 @@ function TelaAdmin() {
         </button>
       </div>
 
-      {/* FEEDBACK DE STATUS */}
       {status && (
         <div className={`p-3 text-center text-sm font-medium ${status.tipo === 'erro' ? 'bg-red-100 text-red-700' : status.tipo === 'sucesso' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
           {status.texto}
         </div>
       )}
 
-      {/* LAYOUT PRINCIPAL: LISTA NA ESQUERDA, FORMULÁRIO NA DIREITA */}
       <div className="flex flex-1 overflow-hidden">
         
-        {/* COLUNA ESQUERDA: LISTA DE MATÉRIAS */}
         <div className="w-1/3 max-w-sm bg-white border-r border-gray-200 flex flex-col">
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-4 border-b border-gray-200 bg-gray-50">
             <button 
               onClick={handleAdicionarMateria}
-              className="w-full mb-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-lg font-semibold text-sm transition-colors"
+              className="w-full mb-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg font-semibold text-sm transition-colors shadow-sm"
             >
               + Adicionar Nova Disciplina
             </button>
+            
+            <div className="mb-3">
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Filtrar por Curso</label>
+              <select 
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"
+                value={cursoFiltro}
+                onChange={(e) => setCursoFiltro(e.target.value)}
+              >
+                <option value="Todos">Todos os Cursos</option>
+                {cursosDisponiveis.map(curso => (
+                  <option key={curso} value={curso}>{curso}</option>
+                ))}
+              </select>
+            </div>
+
             <input
               type="text"
               placeholder="Buscar disciplina..."
-              className="w-full px-3 py-2 bg-gray-100 border-transparent rounded-lg focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm transition-all"
+              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm transition-all"
               value={termoBusca}
               onChange={(e) => setTermoBusca(e.target.value)}
             />
+            
+            <div className="mt-2 text-xs text-gray-500 text-right">
+              {materiasFiltradas.length} matérias encontradas
+            </div>
           </div>
+          
           <div className="flex-1 overflow-y-auto p-2 space-y-1">
             {materiasFiltradas.map(m => (
               <button
@@ -2099,6 +2141,13 @@ function TelaAdmin() {
                   <span>{m.id}</span>
                   <span>{m.periodo}º Período</span>
                 </div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {formatArrayToString(m.curso).split(',').map(c => c.trim()).filter(Boolean).map((curso, idx) => (
+                    <span key={idx} className="text-[10px] px-1.5 bg-gray-200 text-gray-600 rounded">
+                      {curso}
+                    </span>
+                  ))}
+                </div>
               </button>
             ))}
             {materiasFiltradas.length === 0 && (
@@ -2107,7 +2156,6 @@ function TelaAdmin() {
           </div>
         </div>
 
-        {/* COLUNA DIREITA: FORMULÁRIO DE EDIÇÃO */}
         <div className="flex-1 bg-slate-50 overflow-y-auto p-4 sm:p-8">
           {materiaEditando ? (
             <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
@@ -2119,7 +2167,18 @@ function TelaAdmin() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Linha 1 */}
+                
+                <div className="col-span-1 sm:col-span-2 p-3 bg-purple-50 border border-purple-100 rounded-lg">
+                  <label className="block text-xs font-bold text-purple-800 uppercase mb-1">Cursos Associados</label>
+                  <p className="text-xs text-purple-600 mb-2">Para matérias compartilhadas, separe os cursos por vírgula. Ex: Engenharia Eletrônica, Tecnólogo em Automação.</p>
+                  <input 
+                    type="text" 
+                    value={formatArrayToString(materiaEditando.curso)} 
+                    onChange={(e) => handleChangeArray('curso', e.target.value)} 
+                    className="w-full px-3 py-2 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm font-medium" 
+                  />
+                </div>
+
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Código / ID</label>
                   <input type="text" value={materiaEditando.id || ""} onChange={(e) => handleChangeCampo('id', e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
@@ -2129,7 +2188,6 @@ function TelaAdmin() {
                   <input type="text" value={materiaEditando.nome || ""} onChange={(e) => handleChangeCampo('nome', e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm font-semibold" />
                 </div>
 
-                {/* Linha 2 */}
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Período (Número)</label>
                   <input type="number" value={materiaEditando.periodo || ""} onChange={(e) => handleChangeCampo('periodo', parseInt(e.target.value) || 0)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
@@ -2146,7 +2204,6 @@ function TelaAdmin() {
                   </select>
                 </div>
 
-                {/* Linha 3 */}
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Carga Horária Total</label>
                   <input type="number" value={materiaEditando.carga || ""} onChange={(e) => handleChangeCampo('carga', parseInt(e.target.value) || 0)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
@@ -2156,13 +2213,11 @@ function TelaAdmin() {
                   <input type="number" value={materiaEditando.aulasSemanais || ""} onChange={(e) => handleChangeCampo('aulasSemanais', parseInt(e.target.value) || 0)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm" />
                 </div>
 
-                {/* Linha 4 (Ementa Ocupa Tudo) */}
                 <div className="col-span-1 sm:col-span-2">
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Ementa</label>
                   <textarea rows="4" value={materiaEditando.ementa || ""} onChange={(e) => handleChangeCampo('ementa', e.target.value)} className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 text-sm resize-none"></textarea>
                 </div>
 
-                {/* Linha 5: Relações Ocupam Tudo */}
                 <div className="col-span-1 sm:col-span-2 p-4 bg-blue-50 rounded-lg border border-blue-100 space-y-4">
                   <h3 className="text-sm font-bold text-blue-800 mb-2">🔗 Relações e Setas do Fluxograma</h3>
                   <p className="text-xs text-blue-600 mb-4">Separe os códigos das matérias por vírgula (Ex: OPT031, OPT032).</p>

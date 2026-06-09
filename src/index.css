@@ -23,7 +23,7 @@ code {
 /* 1. Define a largura total da barra (bem mais grossa para os dedos) */
 ::-webkit-scrollbar {
   width: 35px;  /* Largura da barra vertical */
-  height: 35px; /* Altura da barra horizontal (se existir) */
+  height: 60px; /* Altura da barra horizontal (se existir) */
 }
 
 /* 2. Estiliza o "trilho" (o fundo por onde a barra corre) */

@@ -460,8 +460,7 @@ function TelaInicial() {
                   src="https://view.genially.com/67dc421512233c90206be05a"
                   title="Guia do Estudante UTFPR"
                   className="w-full h-full border-none z-10 relative"
-                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-                  allowFullScreen
+                  sandbox="allow-same-origin allow-scripts allow-forms"
                 />
               </div>
             </motion.div>

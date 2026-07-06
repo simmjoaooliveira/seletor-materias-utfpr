@@ -79,6 +79,7 @@ function processarMaterias() {
     const materiaProcessada = {
       codigo: codigo,
       nome: materia.nome,
+      curso: materia.curso || "Engenharia Eletrônica",
       periodo: materia.periodo,
       descricao: materia.ementa ? materia.ementa.substring(0, 100) + '...' : `Disciplina do ${materia.periodo}º período.`,
       descricaoDetalhada: materia.ementa || `Esta disciplina faz parte do ${materia.periodo}º período do curso de Engenharia Eletrônica.`,
@@ -127,12 +128,16 @@ function TelaInicial() {
   const navigate = useNavigate();
   const [mostrarModalInstagram, setMostrarModalInstagram] = useState(false);
   const [mostrarModalSite, setMostrarModalSite] = useState(false);
+  
+  // Novos modais do Guia do Estudante
+  const [mostrarModalGuiaQR, setMostrarModalGuiaQR] = useState(false);
+  const [mostrarModalGuiaSite, setMostrarModalGuiaSite] = useState(false);
 
   const totalMaterias = Object.values(MATERIAS_POR_PERIODO).flat().length;
   const totalPeriodos = PERIODOS.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 overflow-y-auto relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 overflow-y-auto relative flex items-center">
       {/* Background animado - Circuitos */}
       <div className="fixed inset-0 opacity-10 pointer-events-none">
         <svg className="w-full h-full" viewBox="0 0 1200 800">
@@ -202,85 +207,98 @@ function TelaInicial() {
         </svg>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center min-h-screen p-4 sm:p-8 py-12 sm:py-16" style={{ pointerEvents: 'auto' }}>
-        <div className="text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Engenharia Eletrônica
-          </h1>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-300">
-            Sistema de Seleção de Matérias
-          </p>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="w-full max-w-5xl mx-auto mb-8 sm:mb-12 relative z-10 mt-8 sm:mt-12"
-        >
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            <motion.div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-blue-400 mb-1">{totalPeriodos}</div>
-              <div className="text-xs sm:text-sm text-gray-300">Períodos</div>
-            </motion.div>
-            <motion.div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-green-400 mb-1">{totalMaterias}</div>
-              <div className="text-xs sm:text-sm text-gray-300">Matérias</div>
-            </motion.div>
-            <motion.div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-orange-400 mb-1">3</div>
-              <div className="text-xs sm:text-sm text-gray-300">Trilhas</div>
-            </motion.div>
-            <motion.div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-purple-400 mb-1">5</div>
-              <div className="text-xs sm:text-sm text-gray-300">Anos</div>
-            </motion.div>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 py-12" style={{ pointerEvents: 'auto' }}>
+        
+        <div className="flex flex-col items-start w-full">
+          
+          {/* TÍTULO */}
+          <div className="text-left mb-10">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight">
+              Engenharia Eletrônica
+            </h1>
+            <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300">
+              Sistema de Seleção de Matérias
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <motion.div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 relative overflow-hidden">
-              <div className="text-2xl mb-2 relative z-10">💻</div>
-              <h3 className="text-white font-semibold text-sm sm:text-base mb-1 relative z-10">Engenharia de Computação</h3>
-              <p className="text-gray-300 text-xs sm:text-sm relative z-10">Sistemas computacionais, software e hardware.</p>
+          {/* SESSÃO PRINCIPAL DIVIDIDA: Quadros à esquerda, Guia à direita */}
+          <div className="flex flex-col md:flex-row w-full justify-start items-start md:items-center gap-12 mb-12">
+            
+            {/* QUADROS ALINHADOS À ESQUERDA */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="w-full md:w-1/2 lg:w-1/3 grid grid-cols-2 gap-4 sm:gap-6"
+            >
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl transition-transform hover:scale-105">
+                <div className="text-4xl sm:text-5xl font-bold text-blue-400 mb-2">{totalPeriodos}</div>
+                <div className="text-sm sm:text-base text-gray-300 font-medium">Períodos</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl transition-transform hover:scale-105">
+                <div className="text-4xl sm:text-5xl font-bold text-green-400 mb-2">{totalMaterias}</div>
+                <div className="text-sm sm:text-base text-gray-300 font-medium">Matérias</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl transition-transform hover:scale-105">
+                <div className="text-4xl sm:text-5xl font-bold text-orange-400 mb-2">3</div>
+                <div className="text-sm sm:text-base text-gray-300 font-medium">Trilhas</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl transition-transform hover:scale-105">
+                <div className="text-4xl sm:text-5xl font-bold text-purple-400 mb-2">5</div>
+                <div className="text-sm sm:text-base text-gray-300 font-medium">Anos</div>
+              </div>
             </motion.div>
-            <motion.div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 relative overflow-hidden">
-              <div className="text-2xl mb-2 relative z-10">🏭</div>
-              <h3 className="text-white font-semibold text-sm sm:text-base mb-1 relative z-10">Engenharia Industrial</h3>
-              <p className="text-gray-300 text-xs sm:text-sm relative z-10">Otimização de processos e sistemas produtivos.</p>
-            </motion.div>
-            <motion.div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 relative overflow-hidden">
-              <div className="text-2xl mb-2 relative z-10">🏥</div>
-              <h3 className="text-white font-semibold text-sm sm:text-base mb-1 relative z-10">Engenharia Biomédica</h3>
-              <p className="text-gray-300 text-xs sm:text-sm relative z-10">Instrumentação médica e equipamentos de saúde.</p>
-            </motion.div>
-          </div>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center relative mt-8 sm:mt-12"
-          style={{ zIndex: 50, pointerEvents: 'auto' }}
-        >
-          <motion.button
-            onClick={() => navigate('/selecao_materia')}
-            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-bold text-lg sm:text-xl rounded-xl shadow-2xl transform transition-all cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{
-              boxShadow: ["0 0 20px rgba(59, 130, 246, 0.5)", "0 0 30px rgba(34, 197, 94, 0.7)", "0 0 20px rgba(59, 130, 246, 0.5)"],
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            {/* BOTÃO/BANNER GUIA DO ESTUDANTE À DIREITA */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              /*className="w-full md:w-1/2 lg:w-1/3 flex justify-end"*/
+              className="w-full md:w-auto lg:w-1/3 flex justify-start"
+            >
+              <button 
+                onClick={() => setMostrarModalGuiaQR(true)}
+                className="w-full bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-3xl p-6 sm:p-8 shadow-[0_0_40px_rgba(168,85,247,0.4)] border border-white/20 flex flex-col items-center justify-center gap-4 transform transition-all hover:scale-105 hover:shadow-[0_0_60px_rgba(168,85,247,0.6)] cursor-pointer text-center group"
+              >
+                <div className="text-6xl mb-2 group-hover:animate-bounce">📘</div>
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1">Guia do Estudante</h3>
+                  <p className="text-indigo-100 text-sm sm:text-base font-medium">UTFPR Campo Mourão</p>
+                </div>
+                <div className="mt-2 text-xs text-white/80 bg-white/20 px-4 py-1.5 rounded-full">
+                  Toque para acessar
+                </div>
+              </button>
+            </motion.div>
+
+          </div>
+
+          {/* BOTÕES DE NAVEGAÇÃO BASE */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 items-start relative"
+            style={{ zIndex: 50, pointerEvents: 'auto' }}
           >
-            <span className="flex items-center gap-2">
-              <span>🔌</span>
-              <span>Matérias</span>
-              <span>⚡</span>
-            </span>
-          </motion.button>
+            <motion.button
+              onClick={() => navigate('/selecao_materia')}
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-bold text-lg sm:text-xl rounded-xl shadow-2xl transform transition-all cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              animate={{
+                boxShadow: ["0 0 20px rgba(59, 130, 246, 0.5)", "0 0 30px rgba(34, 197, 94, 0.7)", "0 0 20px rgba(59, 130, 246, 0.5)"],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <span className="flex items-center gap-2">
+                <span>🔌</span>
+                <span>Matérias</span>
+                <span>⚡</span>
+              </span>
+            </motion.button>
 
-          <div className="flex gap-4" style={{ position: 'relative', zIndex: 51 }}>
             <motion.button
               onClick={() => setMostrarModalInstagram(true)}
               className="px-6 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 cursor-pointer"
@@ -312,9 +330,148 @@ function TelaInicial() {
                 <span>Fluxograma</span>
               </span>
             </motion.button>
-          </div>
-        </motion.div>
+          </motion.div>
+          
+        </div>
       </div>
+
+      {/* ========================================================= */}
+      {/* MODAIS DO GUIA DO ESTUDANTE */}
+      {/* ========================================================= */}
+
+      {/* Modal QR Code Guia do Estudante */}
+      <AnimatePresence>
+        {mostrarModalGuiaQR && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setMostrarModalGuiaQR(false)}
+            style={{ zIndex: 10005 }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border-4 border-indigo-100"
+              style={{ zIndex: 10006 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">📘</span>
+                  <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                    Guia do Estudante
+                  </h2>
+                </div>
+                <motion.button
+                  onClick={() => setMostrarModalGuiaQR(false)}
+                  className="text-gray-400 hover:text-gray-600 text-3xl font-bold w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-all"
+                >
+                  ×
+                </motion.button>
+              </div>
+
+              <div className="flex flex-col items-center gap-4 mb-8">
+                <div className="bg-white p-4 rounded-2xl shadow-lg border-2 border-indigo-100">
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent('https://view.genially.com/67dc421512233c90206be05a')}`}
+                    alt="QR Code Guia do Estudante"
+                    className="w-64 h-64"
+                  />
+                </div>
+                <p className="text-sm font-semibold text-indigo-800 text-center">Escaneie o QR Code para acessar pelo celular</p>
+              </div>
+
+              <div className="mt-4 w-full flex flex-col gap-3">
+                <motion.button
+                  onClick={() => {
+                    setMostrarModalGuiaQR(false);
+                    setMostrarModalGuiaSite(true);
+                  }}
+                  className="w-full px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="text-xl">👆</span> Navegar aqui no Totem
+                </motion.button>
+                <motion.button
+                  onClick={() => setMostrarModalGuiaQR(false)}
+                  className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-all shadow-sm"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Fechar
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal do Site Genially (Guia do Estudante) */}
+      <AnimatePresence>
+        {mostrarModalGuiaSite && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-8"
+            onClick={() => setMostrarModalGuiaSite(false)}
+            style={{ zIndex: 10005 }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-slate-900 rounded-3xl w-full h-full max-h-[95vh] shadow-[0_0_50px_rgba(79,70,229,0.5)] flex flex-col overflow-hidden max-w-7xl border border-slate-700"
+              style={{ zIndex: 10006 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header do Guia Embutido */}
+              <div className="flex items-center justify-between p-4 bg-slate-800 border-b border-slate-700">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">📘</span>
+                  <h2 className="text-lg sm:text-xl font-bold text-white">
+                    Guia do Estudante Interativo
+                  </h2>
+                </div>
+                <motion.button
+                  onClick={() => setMostrarModalGuiaSite(false)}
+                  className="px-6 py-2 bg-slate-700 hover:bg-red-500 text-white font-bold rounded-lg transition-colors shadow-md flex items-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Fechar Guia
+                </motion.button>
+              </div>
+
+              {/* Corpo do Guia (Iframe Genially em 100% nativo) */}
+              <div className="flex-1 w-full relative overflow-hidden bg-slate-900">
+                <div className="absolute inset-0 flex items-center justify-center z-0">
+                  <p className="text-slate-500 font-medium animate-pulse flex flex-col items-center gap-2">
+                    <span className="text-3xl">⏳</span>
+                    Carregando conteúdo interativo...
+                  </p>
+                </div>
+                
+                <iframe
+                  src="https://view.genially.com/67dc421512233c90206be05a"
+                  title="Guia do Estudante UTFPR"
+                  className="w-full h-full border-none z-10 relative"
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                  allowFullScreen
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================= */}
+      {/* OUTROS MODAIS ORIGINAIS (Site UTFPR, Instagram) */}
+      {/* ========================================================= */}
 
       {/* Modal do Site da UTFPR embutido */}
       <AnimatePresence>
@@ -335,7 +492,6 @@ function TelaInicial() {
               style={{ zIndex: 10006 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header do Navegador Embutido */}
               <div className="flex items-center justify-between p-4 bg-slate-100 border-b border-gray-200">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">🏛️</span>
@@ -359,17 +515,12 @@ function TelaInicial() {
                   <p className="text-gray-400 font-medium animate-pulse">Carregando portal...</p>
                 </div>
                 
-                {/* O container abaixo cria um "canvas" maior que a tela 
-                  (cerca de 150% do tamanho) e depois encolhe (escala) tudo 
-                  para 67%, fazendo o conteúdo do site parecer menor, 
-                  exibindo muito mais informação sem barra de rolagem horizontal.
-                */}
                 <div 
                   style={{
-                    width: '150%',        // Compensa a redução
-                    height: '150%',       // Compensa a redução
-                    transform: 'scale(0.67)', // O "zoom out" equivalente a 67%
-                    transformOrigin: 'top left' // Ponto de partida da redução
+                    width: '150%',        
+                    height: '150%',       
+                    transform: 'scale(0.67)', 
+                    transformOrigin: 'top left' 
                   }}
                 >
                   <iframe
@@ -930,13 +1081,12 @@ function SelecaoPeriodoMaterias() {
                 >
                   🔍
                 </motion.div>
-                <motion.input
+                <input
                   type="text"
                   placeholder="Pesquisar matérias..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="w-full pl-12 pr-10 py-3 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all shadow-sm hover:shadow-lg"
-                  whileFocus={{ scale: 1.02 }}
                 />
                 {query && (
                   <motion.button
@@ -1211,6 +1361,21 @@ function SelecaoPeriodoMaterias() {
                         const materiaRelacionada = Object.values(TODAS_MATERIAS).find(m => m.nome === nome);
                         return (
                           <span key={idx} className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs sm:text-sm">
+                            {nome} {materiaRelacionada && ` (${materiaRelacionada.periodo}º período)`}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+                {materiaDetalhada.requer && materiaDetalhada.requer.length > 0 && (
+                  <div>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">Conhecimentos recomendados</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {materiaDetalhada.requer.map((nome, idx) => {
+                        const materiaRelacionada = Object.values(TODAS_MATERIAS).find(m => m.nome === nome);
+                        return (
+                          <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs sm:text-sm">
                             {nome} {materiaRelacionada && ` (${materiaRelacionada.periodo}º período)`}
                           </span>
                         );
@@ -1866,7 +2031,7 @@ function TelaAdmin() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (loginUser === "daeln" && loginPass === "1234") {
+    if (loginUser === "DAELN" && loginPass === "ricken2026") {
       setIsAuthenticated(true);
       setLoginErro("");
     } else {

@@ -128,6 +128,7 @@ function TelaInicial() {
   const navigate = useNavigate();
   const [mostrarModalInstagram, setMostrarModalInstagram] = useState(false);
   const [mostrarModalSite, setMostrarModalSite] = useState(false);
+  const [mostrarModalFeedback, setMostrarModalFeedback] = useState(false);
   
   // Novos modais do Guia do Estudante
   const [mostrarModalGuiaQR, setMostrarModalGuiaQR] = useState(false);
@@ -254,7 +255,6 @@ function TelaInicial() {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
-              /*className="w-full md:w-1/2 lg:w-1/3 flex justify-end"*/
               className="w-full md:w-auto lg:w-1/3 flex justify-start"
             >
               <button 
@@ -286,11 +286,8 @@ function TelaInicial() {
               onClick={() => navigate('/selecao_materia')}
               className="px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-bold text-lg sm:text-xl rounded-xl shadow-2xl transform transition-all cursor-pointer"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              animate={{
-                boxShadow: ["0 0 20px rgba(59, 130, 246, 0.5)", "0 0 30px rgba(34, 197, 94, 0.7)", "0 0 20px rgba(59, 130, 246, 0.5)"],
-              }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              whileTap={{ scale: 0.9 }}
+              
             >
               <span className="flex items-center gap-2">
                 <span>🔌</span>
@@ -302,7 +299,7 @@ function TelaInicial() {
             <motion.button
               onClick={() => setMostrarModalInstagram(true)}
               className="px-6 py-4 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 cursor-pointer"
-              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileHover={{ scale: 1.1}}
               whileTap={{ scale: 0.9 }}
             >
               <span className="text-xl">📷</span>
@@ -312,7 +309,7 @@ function TelaInicial() {
             <motion.button
               onClick={() => setMostrarModalSite(true)}
               className="px-6 py-4 bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 cursor-pointer"
-              whileHover={{ scale: 1.1, rotate: -5 }}
+              whileHover={{ scale: 1.1}}
               whileTap={{ scale: 0.9 }}
             >
               <span className="text-xl">🏛️</span>
@@ -330,6 +327,20 @@ function TelaInicial() {
                 <span>Fluxograma</span>
               </span>
             </motion.button>
+
+            {/* BOTÃO DE FEEDBACK */}
+            <motion.button
+              onClick={() => setMostrarModalFeedback(true)}
+              className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold text-lg sm:text-xl rounded-xl shadow-2xl transform transition-all cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="flex items-center gap-2">
+                <span>💬</span>
+                <span>Feedback</span>
+              </span>
+            </motion.button>
+
           </motion.div>
           
         </div>
@@ -589,6 +600,47 @@ function TelaInicial() {
                   Fechar
                 </motion.button>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal de Feedback */}
+      <AnimatePresence>
+        {mostrarModalFeedback && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setMostrarModalFeedback(false)}
+            style={{ zIndex: 10005 }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center"
+              style={{ zIndex: 10006 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Sua opinião importa!</h2>
+              <p className="text-gray-600 mb-6">Escaneie o QR Code abaixo para nos enviar sugestões ou reportar erros.</p>
+              
+              <div className="bg-white p-4 rounded-2xl shadow-lg border-2 border-gray-200 inline-block mb-6">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent('https://forms.gle/ruiNCDKnFegEE9916')}`}
+                  alt="QR Code Feedback"
+                  className="w-48 h-48"
+                />
+              </div>
+              
+              <button
+                onClick={() => setMostrarModalFeedback(false)}
+                className="w-full py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-xl transition-all"
+              >
+                Fechar
+              </button>
             </motion.div>
           </motion.div>
         )}
